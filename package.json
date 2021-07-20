@@ -1,0 +1,19 @@
+{
+  "name": "chatapp",
+  "version": "1.0.0",
+  "description": "chat application / socket.io, react, redux, express, mongodb",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/orlov-e/chatapp.git"
+  },
+  "author": "Eugene Orlov",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/orlov-e/chatapp/issues"
+  },
+  "homepage": "https://github.com/orlov-e/chatapp#readme"
+}
