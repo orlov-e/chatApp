@@ -1,6 +1,7 @@
 import axios from "axios";
+import { config } from "../config/config";
 
-axios.defaults.baseURL = "http://localhost:3001/api";
+axios.defaults.baseURL = config.serverBaseUrl;
 axios.defaults.headers.common["Authorization"] = window.localStorage.token;
 window.axios = axios;
 

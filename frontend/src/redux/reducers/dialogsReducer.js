@@ -1,5 +1,6 @@
 const initialState = {
   dialogsArray: null,
+  currentDialog: window.location.pathname.split("/dialog/")[1],
 };
 
 const dialogsReducer = (state = initialState, { type, payload }) => {

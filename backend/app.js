@@ -10,6 +10,7 @@ const bodyparser = require("body-parser");
 const dotenv = require("dotenv").config();
 const userRoutes = require("./routes/user");
 const dialogRoutes = require("./routes/dialog");
+const messageRoutes = require("./routes/message");
 const cors = require("cors");
 const morgan = require("morgan");
 const passport = require("passport");
@@ -36,6 +37,7 @@ app.use(morgan("dev"));
 
 app.use("/api/auth", userRoutes);
 app.use("/api", dialogRoutes);
+app.use("/api", messageRoutes);
 
 io.on("connection", function (socket) {
   console.log("connected");

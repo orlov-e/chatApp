@@ -4,20 +4,18 @@ import ListItemIcon from "@material-ui/core/ListItemIcon";
 import ListItemText from "@material-ui/core/ListItemText";
 import Avatar from "@material-ui/core/Avatar";
 import Status from "../../../../common/Status";
-import { Paper } from "@material-ui/core";
-import { makeStyles } from "@material-ui/core/styles";
 import { GlassCard } from "../../../../common/GlassCard";
 
-const Message = ({ isMe = false, messageText, date, id }) => {
+const Message = ({ isMe, text, date, messageId }) => {
 
   return (
     <div>
       {isMe ? (
-        <ListItem key="1" style={{ justifyContent: "flex-end" }}>
+        <ListItem key={messageId} style={{ justifyContent: "flex-end" }}>
           <GlassCard color="deepskyblue">
             <ListItemText
               style={{ padding: "8px" }}
-              primary="Hey man, What's up ?"
+              primary={text}
               secondary="10:30"
             ></ListItemText>
           </GlassCard>
@@ -26,7 +24,7 @@ const Message = ({ isMe = false, messageText, date, id }) => {
           </ListItemIcon>
         </ListItem>
       ) : (
-        <ListItem key="1" alignItems="flex-start">
+        <ListItem key={messageId} alignItems="flex-start">
           <ListItemIcon>
             <Avatar alt="Remy Sharp" src="/static/images/avatar/1.jpg" />
             <Status />
@@ -34,7 +32,7 @@ const Message = ({ isMe = false, messageText, date, id }) => {
           <GlassCard>
             <ListItemText
               style={{ padding: "8px" }}
-              primary="Hey man, What's up ?"
+              primary={text}
               secondary="10:30"
             ></ListItemText>
           </GlassCard>

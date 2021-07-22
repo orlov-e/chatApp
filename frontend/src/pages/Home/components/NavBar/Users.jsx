@@ -3,17 +3,19 @@ import List from "@material-ui/core/List";
 import User from "./User/User";
 import UserLoading from "../../../../common/UserLoading";
 
-const Users = ({ dialogsArray }) => {
+const Users = ({ dialogsArray, currentDialog }) => {
+
   return (
-    <div>
+    <div >
       {dialogsArray ? (
         <List>
-          {dialogsArray.map(({ partner }) => {
+          {dialogsArray.map((dialog) => {
             return (
               <User
-                id={partner._id}
-                firstName={partner.firstName}
-                lastName={partner.lastName}
+                dialogId={dialog._id}
+                id={dialog.partner._id}
+                firstName={dialog.partner.firstName}
+                lastName={dialog.partner.lastName}
                 photo={null}
                 isOnline={false}
               />

@@ -1,42 +1,49 @@
-import React from "react";
+import React, { useRef, useEffect } from "react";
 import List from "@material-ui/core/List";
 import Message from "./Message";
+import NoMessages from "../../../../common/NoMessages";
 
-const MessageArea = ({ dialogsArray }) => {
+const DialogArea = ({ messagesArray, thisAccountId }) => {
+  const messagesEndRef = useRef(null);
+
+  const scrollToBottom = () => {
+    messagesEndRef.current?.scrollIntoView({ block: "end" });
+  };
+
+  useEffect(() => {
+    scrollToBottom();
+  }, [messagesArray]);
 
   return (
-    <List>
-      <Message />
-      <Message isMe={true}/>
-      </List>
-  /* <ListItem key="2">
-        <Grid container>
-          <Grid item xs={12}>
-            <ListItemText
-              align="left"
-              primary="Hey, Iam Good! What about you ?"
-            ></ListItemText>
-          </Grid>
-          <Grid item xs={12}>
-            <ListItemText align="left" secondary="09:31"></ListItemText>
-          </Grid>
-        </Grid>
-      </ListItem>
-      <ListItem key="3">
-        <Grid container>
-          <Grid item xs={12}>
-            <ListItemText
-              align="right"
-              primary="Cool. i am good, let's catch up!"
-            ></ListItemText>
-          </Grid>
-          <Grid item xs={12}>
-            <ListItemText align="right" secondary="10:30"></ListItemText>
-          </Grid>
-        </Grid>
-      </ListItem>*/
+    <div>
+      {(messagesArray == null)  ? (
+        <NoMessages />
+      ) : (
+        <List>
+          {messagesArray.map((message) => {
+            if (message.user._id === thisAccountId) {
+              return (
+                <Message
+                  isMe={true}
+                  text={message.text}
+                  messageId={message._id}
+                />
+              );
+            } else {
+              return (
+                <Message
+                  isMe={false}
+                  text={message.text}
+                  messageId={message._id}
+                />
+              );
+            }
+          })}
+          <div ref={messagesEndRef}></div>
+        </List>
+      )}
+    </div>
   );
 };
 
-export default MessageArea;
-
+export default DialogArea;

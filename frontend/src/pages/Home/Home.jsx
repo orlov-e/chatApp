@@ -13,17 +13,25 @@ import Header from "./components/Header/Header";
 import DialogArea from "./components/DialogArea/DialogArea";
 import TypeField from "./components/TypeField/TypeField";
 import { fetchDialogsData } from "../../redux/actions/dialogs";
+import { fetchMessagesData } from "../../redux/actions/messages";
 
 const Home = () => {
   const classes = useStyles();
   const dispatch = useDispatch();
+  console.log(window.location.pathname.split("/dialog/")[1])
+  
   useEffect(() => {
     dispatch(fetchUserData());
     dispatch(fetchDialogsData());
+    dispatch(fetchMessagesData(window.location.pathname.split("/dialog/")[1]));
   }, []);
+  
   const { userInfo } = useSelector(({ user }) => user);
-  const { dialogsArray } = useSelector(({ dialogs }) => dialogs);
   const { _id, firstName, lastName } = userInfo;
+  
+  const { dialogsArray, currentDialog } = useSelector(({ dialogs }) => dialogs);
+
+  const { messagesArray } = useSelector(({ messages }) => messages);
   return (
     <Container maxWidth="md">
       <Header />
@@ -34,14 +42,14 @@ const Home = () => {
             <Divider />
             <Search />
             <Grid className={classes.navBar}>
-              <Users dialogsArray = {dialogsArray} />
+              <Users dialogsArray={dialogsArray} currentDialog={currentDialog} />
             </Grid>
           </GlassCard>
         </Grid>
         <Grid item xs={9}>
           <GlassCard blur="15">
             <Grid className={classes.dialogArea}>
-              <DialogArea />
+              <DialogArea messagesArray={messagesArray} thisAccountId={_id} />
             </Grid>
             <Divider />
             <TypeField />

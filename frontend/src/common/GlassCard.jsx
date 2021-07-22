@@ -1,4 +1,4 @@
-import { Box, BoxProps, makeStyles, Theme } from "@material-ui/core";
+import { Box, makeStyles } from "@material-ui/core";
 import clsx from "clsx";
 import color from "color";
 
