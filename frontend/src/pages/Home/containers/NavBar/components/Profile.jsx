@@ -4,7 +4,7 @@ import ListItem from "@material-ui/core/ListItem";
 import ListItemIcon from "@material-ui/core/ListItemIcon";
 import ListItemText from "@material-ui/core/ListItemText";
 import Avatar from "@material-ui/core/Avatar";
-import UserLoading from "../../../../common/UserLoading";
+import UserLoading from "../../../../../common/UserLoading";
 
 const Profile = React.memo(({ _id, firstName, lastName }) => {
   const fullName = `${firstName} ${lastName}`;

@@ -3,8 +3,8 @@ import ListItem from "@material-ui/core/ListItem";
 import ListItemIcon from "@material-ui/core/ListItemIcon";
 import ListItemText from "@material-ui/core/ListItemText";
 import Avatar from "@material-ui/core/Avatar";
-import Status from "../../../../common/Status";
-import { GlassCard } from "../../../../common/GlassCard";
+import Status from "../../../../../common/Status";
+import { GlassCard } from "../../../../../common/GlassCard";
 
 const Message = ({ isMe, text, date, messageId }) => {
 

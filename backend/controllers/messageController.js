@@ -1,4 +1,5 @@
 const MessageModel = require("../models/Message");
+const DialogModel = require("../models/Dialog");
 const errorHandler = require("../utils/errorHandler");
 
 module.exports.getMessages = async (req, res) => {
@@ -13,7 +14,6 @@ module.exports.getMessages = async (req, res) => {
       }
       res.status(200).json(messages);
     });
-
 };
 
 module.exports.createMessage = async (req, res) => {
@@ -27,6 +27,19 @@ module.exports.createMessage = async (req, res) => {
 
   try {
     await message.save();
+    await DialogModel.findOneAndUpdate(
+      { _id: postData.dialog },
+      { lastMessage: message._id },
+      { upsert: true },
+      function (err) {
+        if (err) {
+          return res.status(500).json({
+            status: "error",
+            message: err,
+          });
+        }
+      }
+    );
     await message.populate(["user", "dialog"]).execPopulate();
 
     // Socket.io send message

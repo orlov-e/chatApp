@@ -5,9 +5,9 @@ import ListItem from "@material-ui/core/ListItem";
 import ListItemIcon from "@material-ui/core/ListItemIcon";
 import ListItemText from "@material-ui/core/ListItemText";
 import Avatar from "@material-ui/core/Avatar";
-import Status from "../../../../../common/Status";
+import Status from "../../../../../../common/Status";
 import { makeStyles } from "@material-ui/core/styles";
-import { fetchMessagesData } from "../../../../../redux/actions/messages";
+import { fetchMessagesData } from "../../../../../../redux/actions/messages";
 
 const User = ({ id, firstName, lastName, photo, isOnline, dialogId , currentDialog }) => {
   const dispatch = useDispatch();

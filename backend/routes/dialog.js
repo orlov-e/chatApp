@@ -20,7 +20,7 @@ router.post(
 );
 //localhost:3001/api/dialogs
 router.delete(
-  "/dialogs",
+  "/dialogs/:id",
   passport.authenticate("jwt", { session: false }),
   updateLastSeen,
   controller.deleteDialog

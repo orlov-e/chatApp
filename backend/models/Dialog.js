@@ -13,6 +13,10 @@ const dialogSchema = new Schema(
       ref: "Users",
       required: true,
     },
+    lastMessage: {
+      type: Schema.Types.ObjectId,
+      ref: "Messages",
+    },
   },
   {
     timestamps: true,

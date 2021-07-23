@@ -1,58 +1,30 @@
-import React, { useEffect } from "react";
+import React from "react";
 import { useSelector, useDispatch } from "react-redux";
-import { fetchUserData } from "../../redux/actions/user";
 import { makeStyles } from "@material-ui/core/styles";
 import Grid from "@material-ui/core/Grid";
-import Divider from "@material-ui/core/Divider";
 import { Container } from "@material-ui/core";
 import { GlassCard } from "../../common/GlassCard";
-import Users from "./components/NavBar/Users";
-import Profile from "./components/NavBar/Profile";
-import Search from "./components/NavBar/Search";
-import Header from "./components/Header/Header";
-import DialogArea from "./components/DialogArea/DialogArea";
-import TypeField from "./components/TypeField/TypeField";
-import { fetchDialogsData } from "../../redux/actions/dialogs";
-import { fetchMessagesData } from "../../redux/actions/messages";
+import Header from "./containers/Header/Header";
+import DialogArea from "./containers/DialogArea/DialogArea";
+import NavBar from "./containers/NavBar/NavBar";
 
 const Home = () => {
   const classes = useStyles();
-  const dispatch = useDispatch();
-  console.log(window.location.pathname.split("/dialog/")[1])
-  
-  useEffect(() => {
-    dispatch(fetchUserData());
-    dispatch(fetchDialogsData());
-    dispatch(fetchMessagesData(window.location.pathname.split("/dialog/")[1]));
-  }, []);
-  
   const { userInfo } = useSelector(({ user }) => user);
   const { _id, firstName, lastName } = userInfo;
-  
-  const { dialogsArray, currentDialog } = useSelector(({ dialogs }) => dialogs);
 
-  const { messagesArray } = useSelector(({ messages }) => messages);
   return (
     <Container maxWidth="md">
       <Header />
       <Grid container className={classes.chatSection} spacing={1}>
         <Grid item xs={3}>
           <GlassCard height="100%" blur="20">
-            <Profile _id={_id} firstName={firstName} lastName={lastName} />
-            <Divider />
-            <Search />
-            <Grid className={classes.navBar}>
-              <Users dialogsArray={dialogsArray} currentDialog={currentDialog} />
-            </Grid>
+            <NavBar _id={_id} firstName={firstName} lastName={lastName}  />
           </GlassCard>
         </Grid>
         <Grid item xs={9}>
           <GlassCard blur="15">
-            <Grid className={classes.dialogArea}>
-              <DialogArea messagesArray={messagesArray} thisAccountId={_id} />
-            </Grid>
-            <Divider />
-            <TypeField />
+              <DialogArea thisAccountId={_id} />
           </GlassCard>
         </Grid>
       </Grid>
@@ -75,9 +47,5 @@ const useStyles = makeStyles({
   },
   borderRight500: {
     borderRight: "1px solid #808080",
-  },
-  dialogArea: {
-    height: "75vh",
-    overflowY: "auto",
   },
 });

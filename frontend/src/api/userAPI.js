@@ -1,9 +1,4 @@
-import axios from "axios";
-import { config } from "../config/config";
-
-axios.defaults.baseURL = config.serverBaseUrl;
-axios.defaults.headers.common["Authorization"] = window.localStorage.token;
-window.axios = axios;
+import axios from "./../core/axios";
 
 export const userAPI = {
   getMe() {

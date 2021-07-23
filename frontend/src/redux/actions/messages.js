@@ -18,7 +18,7 @@ export const fetchMessagesData = (dialogId) => (dispatch) => {
     .getMessages(dialogId)
     .then(({ data }) => {
       dispatch(setMessagesData(data));
-      if (data.length == 0) {
+      if (data.length === 0) {
         dispatch(setNoMessages(null));
       }
     }).catch(() => {
