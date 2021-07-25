@@ -1,6 +1,6 @@
 const initialState = {
   dialogsArray: null,
-  currentDialog: window.location.pathname.split("/dialog/")[1],
+  selectedDialog: window.location.pathname.split("dialog/")[1],
 };
 
 const dialogsReducer = (state = initialState, { type, payload }) => {
@@ -9,6 +9,12 @@ const dialogsReducer = (state = initialState, { type, payload }) => {
       return {
         ...state,
         dialogsArray: [...payload],
+      };
+    }
+    case "DIALOGS_SET_SELECTED_DIALOG": {
+      return {
+        ...state,
+        selectedDialog: payload,
       };
     }
     default: {

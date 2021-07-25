@@ -1,20 +1,40 @@
 import React, { useRef, useEffect } from "react";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import List from "@material-ui/core/List";
 import Message from "./components/Message";
 import NoMessages from "../../../../common/NoMessages";
 import TypeField from "./components/TypeField";
 import { Grid } from "@material-ui/core";
 import Divider from "@material-ui/core/Divider";
+import socket from "../../../../core/socket";
+import {
+  fetchMessagesData,
+  addMessage,
+} from "../../../../redux/actions/messages";
 
-const DialogArea = ({ thisAccountId }) => {
+const DialogArea = ({ thisAccountId, messagesArray, selectedDialog }) => {
   const messagesEndRef = useRef(null);
-
-  const { messagesArray } = useSelector(({ messages }) => messages);
+  const dispatch = useDispatch();
 
   const scrollToBottom = () => {
     messagesEndRef.current?.scrollIntoView({ block: "end" });
   };
+
+  const onNewMessage = (message) => {
+    debugger;
+    dispatch(addMessage(message));
+  };
+
+  useEffect(() => {
+    if (selectedDialog) {
+      dispatch(fetchMessagesData(selectedDialog));
+    }
+
+    socket.on("SERVER:SEND_MESSAGE", onNewMessage);
+    return () => {
+      socket.removeListener("SERVER:SEND_MESSAGE");
+    };
+  }, [selectedDialog]);
 
   useEffect(() => {
     scrollToBottom();
@@ -23,7 +43,7 @@ const DialogArea = ({ thisAccountId }) => {
   return (
     <div>
       <Grid style={{ height: "75vh", overflowY: "auto" }}>
-        {messagesArray == null ? (
+        {messagesArray.length === 0 ? (
           <NoMessages />
         ) : (
           <List>
@@ -51,7 +71,7 @@ const DialogArea = ({ thisAccountId }) => {
         )}
       </Grid>
       <Divider />
-      <TypeField />
+      <TypeField dialogId={selectedDialog} />
     </div>
   );
 };

@@ -1,19 +1,46 @@
 import React from "react";
 import { Grid, TextField, Fab } from "@material-ui/core";
 import SendIcon from "@material-ui/icons/Send";
+import { useFormik } from "formik";
+import { fetchSendMessage } from "../../../../../redux/actions/messages";
+import { useDispatch } from "react-redux";
 
-const TypeField = () => {
+const TypeField = ({ dialogId }) => {
+  const dispatch = useDispatch();
+
+  const formik = useFormik({
+    initialValues: {
+      textField: "",
+    },
+    onSubmit: (values, { resetForm }) => {
+      dispatch(
+        fetchSendMessage({ text: values.textField, dialogId: dialogId })
+      );
+      resetForm({});
+    },
+  });
+
   return (
-    <Grid container style={{ padding: "20px" }}>
-      <Grid item xs={11}>
-        <TextField id="outlined-basic-email" label="Type Something" fullWidth />
+    <form onSubmit={formik.handleSubmit}>
+      <Grid container style={{ padding: "20px" }}>
+        <Grid item xs={11}>
+          <TextField
+            id="textField"
+            name="textField"
+            value={formik.values.textField}
+            onChange={formik.handleChange}
+            id="outlined-basic-email"
+            label="Type Something"
+            fullWidth
+          />
+        </Grid>
+        <Grid xs={1} align="right">
+          <Fab color="primary" aria-label="add" type="submit">
+            <SendIcon />
+          </Fab>
+        </Grid>
       </Grid>
-      <Grid xs={1} align="right">
-        <Fab color="primary" aria-label="add">
-          <SendIcon />
-        </Fab>
-      </Grid>
-    </Grid>
+    </form>
   );
 };
 

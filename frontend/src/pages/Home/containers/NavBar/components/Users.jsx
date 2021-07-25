@@ -1,10 +1,9 @@
-import React, { useEffect } from "react";
+import React, { useState } from "react";
 import List from "@material-ui/core/List";
 import User from "./User/User";
 import UserLoading from "../../../../../common/UserLoading";
 
-const Users = ({ dialogsArray, currentDialog, thisAccountId }) => {
-
+const Users = ({ dialogsArray, selectedDialog, thisAccountId }) => {
   return (
     <div>
       {dialogsArray ? (
@@ -14,9 +13,10 @@ const Users = ({ dialogsArray, currentDialog, thisAccountId }) => {
               return (
                 <User
                   dialogId={dialog._id}
-                  id={dialog.initiator._id}
+                  userId={dialog.initiator._id}
                   firstName={dialog.initiator.firstName}
                   lastName={dialog.initiator.lastName}
+                  selectedDialog={selectedDialog}
                   photo={null}
                   isOnline={false}
                 />
@@ -25,9 +25,10 @@ const Users = ({ dialogsArray, currentDialog, thisAccountId }) => {
               return (
                 <User
                   dialogId={dialog._id}
-                  id={dialog.partner._id}
+                  userId={dialog.partner._id}
                   firstName={dialog.partner.firstName}
                   lastName={dialog.partner.lastName}
+                  selectedDialog={selectedDialog}
                   photo={null}
                   isOnline={false}
                 />

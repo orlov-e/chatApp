@@ -1,27 +1,41 @@
 import { messagesAPI } from "../../api/messagesAPI";
+import { setSelectedDialog } from "./dialogs";
 
 const MESSAGES_SET_DATA = "MESSAGES_SET_DATA";
-const MESSAGES_SET_NULL = "MESSAGES_SET_NULL";
 
 const setMessagesData = (data) => ({
   type: MESSAGES_SET_DATA,
   payload: data,
 });
 
-const setNoMessages = (data) => ({
-  type: MESSAGES_SET_NULL,
-  payload: data,
-});
+export const addMessage = (message) => (dispatch, getState) => {
+  const { dialogs } = getState();
+  const { selectedDialog } = dialogs;
+  debugger;
+
+  if (selectedDialog === message.dialog._id) {
+    debugger;
+    dispatch({
+      type: "MESSAGES_ADD_MESSAGE",
+      payload: message,
+    });
+  }
+};
 
 export const fetchMessagesData = (dialogId) => (dispatch) => {
   return messagesAPI
     .getMessages(dialogId)
     .then(({ data }) => {
       dispatch(setMessagesData(data));
-      if (data.length === 0) {
-        dispatch(setNoMessages(null));
-      }
-    }).catch(() => {
-      dispatch(setNoMessages(null));
+      dispatch(setSelectedDialog(dialogId));
     })
+    .catch(() => {
+      dispatch(setMessagesData([]));
+    });
 };
+
+export const fetchSendMessage =
+  ({ text, dialogId }) =>
+  (dispatch) => {
+    return messagesAPI.sendMessage(text, dialogId);
+  };

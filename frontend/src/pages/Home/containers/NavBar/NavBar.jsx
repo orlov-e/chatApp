@@ -11,21 +11,20 @@ import socket from "../../../../core/socket";
 
 const NavBar = ({ _id, firstName, lastName }) => {
   const dispatch = useDispatch();
+  const { dialogsArray, selectedDialog } = useSelector(({ dialogs }) => dialogs);
 
   useEffect(() => {
     dispatch(fetchUserData());
     dispatch(fetchDialogsData());
 
     socket.on("SERVER:DIALOG_CREATED", (dialogObj) => {
-      console.log(dialogObj);
       dispatch(fetchDialogsData());
 
       return () => {
-        socket.removeListener('SERVER:DIALOG_CREATED', fetchDialogsData());
+        socket.removeListener("SERVER:DIALOG_CREATED", fetchDialogsData());
       };
     });
   }, []);
-  const { dialogsArray, currentDialog } = useSelector(({ dialogs }) => dialogs);
 
   return (
     <div>
@@ -40,7 +39,7 @@ const NavBar = ({ _id, firstName, lastName }) => {
       >
         <Users
           dialogsArray={dialogsArray}
-          currentDialog={currentDialog}
+          selectedDialog={selectedDialog}
           thisAccountId={_id}
         />
       </Grid>

@@ -1,5 +1,5 @@
 const initialState = {
-  messagesArray: null,
+  messagesArray: [],
 };
 
 const messagesReducer = (state = initialState, { type, payload }) => {
@@ -10,9 +10,10 @@ const messagesReducer = (state = initialState, { type, payload }) => {
         messagesArray: [...payload],
       };
     }
-    case "MESSAGES_SET_NULL": {
+    case "MESSAGES_ADD_MESSAGE": {
       return {
-        messagesArray: payload,
+        ...state,
+        messagesArray: [...state.messagesArray, payload],
       };
     }
     default: {

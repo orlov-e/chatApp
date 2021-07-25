@@ -9,7 +9,7 @@ import Status from "../../../../../../common/Status";
 import { makeStyles } from "@material-ui/core/styles";
 import { fetchMessagesData } from "../../../../../../redux/actions/messages";
 
-const User = ({ id, firstName, lastName, photo, isOnline, dialogId , currentDialog }) => {
+const User = ({ userId, firstName, lastName, photo, isOnline, dialogId , selected }) => {
   const dispatch = useDispatch();
   const classes = useStyles();
 
@@ -19,8 +19,8 @@ const User = ({ id, firstName, lastName, photo, isOnline, dialogId , currentDial
 
   return (
     <div>
-    <Link to={"/dialog/" + id} className={classes.Link} onClick={handleOnClick}>
-      <ListItem button key={id}>
+    <Link to={"/dialog/" + dialogId} className={classes.Link} onClick={handleOnClick}>
+      <ListItem button key={userId}>
         <ListItemIcon>
           <Avatar
             alt={`${firstName} ${lastName}`}

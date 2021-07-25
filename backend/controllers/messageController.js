@@ -3,17 +3,16 @@ const DialogModel = require("../models/Dialog");
 const errorHandler = require("../utils/errorHandler");
 
 module.exports.getMessages = async (req, res) => {
-  const messages = await MessageModel.find({ dialog: req.query.dialog_id })
-    .populate(["dialog", "user"])
-    .exec(function (err, messages) {
-      if (err) {
-        return res.status(404).json({
-          status: "error",
-          message: "Messages not found",
-        });
-      }
-      res.status(200).json(messages);
+  const messages = await MessageModel.find({
+    dialog: req.query.dialog_id,
+  }).populate(["dialog", "user"]);
+  if (!messages) {
+    res.status(404).json({
+      status: "error",
+      message: "messages not found",
     });
+  }
+  res.status(200).json(messages);
 };
 
 module.exports.createMessage = async (req, res) => {
@@ -22,6 +21,7 @@ module.exports.createMessage = async (req, res) => {
     dialog: req.body.dialogId,
     user: req.user._id,
   };
+  console.log(postData)
 
   const message = new MessageModel(postData);
 
@@ -42,11 +42,11 @@ module.exports.createMessage = async (req, res) => {
     );
     await message.populate(["user", "dialog"]).execPopulate();
 
-    // Socket.io send message
+    req.io.emit("SERVER:SEND_MESSAGE", message);
 
     res.status(200).json(message);
   } catch (e) {
-    errorHandler(e);
+    errorHandler(res, e);
   }
 };
 
