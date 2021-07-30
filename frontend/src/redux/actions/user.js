@@ -2,6 +2,7 @@ import { userAPI } from "../../api/userAPI";
 
 const USER_SET_DATA = "USER_SET_DATA";
 const USER_SET_IS_AUTH = "USER_SET_IS_AUTH";
+const USER_SET_FOUND_USERS = "USER_SET_FOUND_USERS";
 
 const setUserData = (data) => ({
   type: USER_SET_DATA,
@@ -11,6 +12,11 @@ const setUserData = (data) => ({
 const setIsAuth = (bool) => ({
   type: USER_SET_IS_AUTH,
   payload: bool,
+});
+
+const setFoundUsers = (data) => ({
+  type: USER_SET_FOUND_USERS,
+  payload: data,
 });
 
 export const fetchUserData = () => (dispatch) => {
@@ -30,7 +36,6 @@ export const fetchUserLogin = (postData) => (dispatch) => {
   return userAPI
     .login(postData)
     .then(({ data }) => {
-      debugger;
       const { token } = data;
       window.localStorage["token"] = token;
       window.axios.defaults.headers.common["Authorization"] = token;
@@ -53,7 +58,14 @@ export const fetchUserRegister = (postData) => (dispatch) => {
     })
     .catch(({ response }) => {
       if ((response.status = 409)) {
+        dispatch(setIsAuth(false));
         return false;
       }
     });
+};
+
+export const fetchFindUsers = (query) => (dispatch) => {
+  return userAPI.findUsers(query).then(({ data }) => {
+    dispatch(setFoundUsers(data));
+  });
 };

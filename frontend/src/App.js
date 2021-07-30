@@ -4,7 +4,6 @@ import { Route, Switch, Redirect } from "react-router-dom";
 import { useSelector } from "react-redux";
 import Auth from "./pages/Auth/Auth";
 import Home from "./pages/Home/Home";
-import socket from "./core/socket"
 
 const App = () => {
   const { isAuth } = useSelector(({ user }) => user);

@@ -5,10 +5,22 @@ const passport = require("passport");
 const updateLastSeen = require("../middleware/updateLastSeen");
 
 //localhost:3001/api/auth/login
-router.post("/login", controller.login)
+router.post("/auth/login", controller.login);
 //localhost:3001/api/auth/register
-router.post("/register", controller.register)
+router.post("/auth/register", controller.register);
 //localhost:3001/api/auth/register
-router.get("/me", passport.authenticate("jwt", {session: false}), updateLastSeen, controller.getMe)
+router.get(
+  "/auth/me",
+  passport.authenticate("jwt", { session: false }),
+  updateLastSeen,
+  controller.getMe
+);
+//localhost:3001/api/auth/findUsers?query=
+router.get(
+  "/findUsers",
+  passport.authenticate("jwt", { session: false }),
+  updateLastSeen,
+  controller.findUsers
+);
 
 module.exports = router;

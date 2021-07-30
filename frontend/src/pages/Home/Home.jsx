@@ -10,7 +10,7 @@ import NavBar from "./containers/NavBar/NavBar";
 
 const Home = () => {
   const classes = useStyles();
-  const { userInfo } = useSelector(({ user }) => user);
+  const { userInfo, foundUsers } = useSelector(({ user }) => user);
   const { _id, firstName, lastName } = userInfo;
   const { messagesArray } = useSelector(({ messages }) => messages);
   const { selectedDialog } = useSelector(({ dialogs }) => dialogs);
@@ -21,7 +21,12 @@ const Home = () => {
       <Grid container className={classes.chatSection} spacing={1}>
         <Grid item xs={3}>
           <GlassCard height="100%" blur="20">
-            <NavBar _id={_id} firstName={firstName} lastName={lastName} />
+            <NavBar
+              _id={_id}
+              firstName={firstName}
+              lastName={lastName}
+              foundUsers={foundUsers}
+            />
           </GlassCard>
         </Grid>
         <Grid item xs={9}>
@@ -41,17 +46,7 @@ const Home = () => {
 export default Home;
 
 const useStyles = makeStyles({
-  navBar: {
-    height: "65vh",
-    overflowY: "auto",
-  },
-  table: {
-    minWidth: 650,
-  },
   chatSection: {
     overflowY: "auto",
-  },
-  borderRight500: {
-    borderRight: "1px solid #808080",
   },
 });

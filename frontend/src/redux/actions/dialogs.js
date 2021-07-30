@@ -1,9 +1,9 @@
 import { dialogsAPI } from "../../api/dialogsAPI";
 
 const DIALOGS_SET_DATA = "DIALOGS_SET_DATA";
-const DIALOGS_SET_SELECTED_DIALOG = "MESSAGES_SET_SELECTED_DIALOG";
+const DIALOGS_SET_SELECTED_DIALOG = "DIALOGS_SET_SELECTED_DIALOG";
 
-const setDialogsData = (data) => ({
+export const setDialogsData = (data) => ({
   type: DIALOGS_SET_DATA,
   payload: data,
 });
@@ -24,4 +24,8 @@ export const fetchDialogsData = () => (dispatch) => {
         dispatch(setDialogsData(null));
       }
     });
+};
+
+export const fetchCreateDialog = (partner, text) => (dispatch) => {
+  return dialogsAPI.createDialog({ partner, text });
 };

@@ -1,21 +1,19 @@
 const bcrypt = require("bcryptjs");
 const jwt = require("jsonwebtoken");
-const User = require("../models/User");
+const UserModel = require("../models/User");
 const errorHandler = require("../utils/errorHandler");
 
 module.exports.login = async function (req, res) {
-  const candidate = await User.findOne({
+  const candidate = await UserModel.findOne({
     email: req.body.email,
   });
 
   if (candidate) {
-    // Password check, user is exsists
     const passwordResult = bcrypt.compareSync(
       req.body.password,
       candidate.password
     );
     if (passwordResult) {
-      // Token generation
       const token = jwt.sign(
         {
           email: candidate.email,
@@ -36,7 +34,6 @@ module.exports.login = async function (req, res) {
       });
     }
   } else {
-    // user not exists
     res.status(404).json({
       message: "user not exists, invalid email",
     });
@@ -44,20 +41,18 @@ module.exports.login = async function (req, res) {
 };
 
 module.exports.register = async function (req, res) {
-  const candidate = await User.findOne({
+  const candidate = await UserModel.findOne({
     email: req.body.email,
   });
 
   if (candidate) {
-    // user already exists
     res.status(409).json({
       message: "user already exists",
     });
   } else {
-    // creating a new user
     const salt = bcrypt.genSaltSync(10);
     const password = req.body.password;
-    const user = new User({
+    const user = new UserModel({
       email: req.body.email,
       password: bcrypt.hashSync(password, salt),
       firstName: req.body.firstName,
@@ -77,7 +72,7 @@ module.exports.register = async function (req, res) {
 
 module.exports.getMe = async function (req, res) {
   const id = req.user._id;
-  const user = await User.findById(id);
+  const user = await UserModel.findById(id);
 
   if (!user) {
     res.status(403).json({
@@ -86,4 +81,32 @@ module.exports.getMe = async function (req, res) {
   } else {
     res.status(200).json(user);
   }
+};
+
+module.exports.findUsers = async function (req, res) {
+  const query = req.query.query;
+
+  const firstWord = query.split(" ")[0];
+  const secondWord = query.split(" ")[1];
+
+  const users = await UserModel.find().or([
+    { email: new RegExp(query, "i") },
+    {
+      firstName: new RegExp(firstWord, "i"),
+      lastName: new RegExp(secondWord, "i"),
+    },
+    {
+      firstName: new RegExp(secondWord, "i"),
+      lastName: new RegExp(firstWord, "i"),
+    },
+  ]);
+
+  if (!users) {
+    res.status(404).json({
+      status: "error",
+      message: "users not found",
+    });
+  }
+
+  res.status(200).json(users);
 };

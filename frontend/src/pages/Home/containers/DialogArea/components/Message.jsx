@@ -7,7 +7,6 @@ import Status from "../../../../../common/Status";
 import { GlassCard } from "../../../../../common/GlassCard";
 
 const Message = ({ isMe, text, date, messageId }) => {
-
   return (
     <div>
       {isMe ? (
@@ -16,7 +15,7 @@ const Message = ({ isMe, text, date, messageId }) => {
             <ListItemText
               style={{ padding: "8px" }}
               primary={text}
-              secondary="10:30"
+              secondary={date}
             ></ListItemText>
           </GlassCard>
           <ListItemIcon style={{ justifyContent: "flex-end" }}>
@@ -33,7 +32,7 @@ const Message = ({ isMe, text, date, messageId }) => {
             <ListItemText
               style={{ padding: "8px" }}
               primary={text}
-              secondary="10:30"
+              secondary={date}
             ></ListItemText>
           </GlassCard>
         </ListItem>

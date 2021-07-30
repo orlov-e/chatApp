@@ -6,7 +6,8 @@ const initialState = {
     email: null,
   },
   token: window.localStorage.token,
-  isAuth: !!window.localStorage.token
+  isAuth: !!window.localStorage.token,
+  foundUsers: [],
 };
 
 const authReducer = (state = initialState, { type, payload }) => {
@@ -16,13 +17,19 @@ const authReducer = (state = initialState, { type, payload }) => {
         ...state,
         userInfo: payload,
         token: localStorage.token,
-        isAuth: true
+        isAuth: true,
       };
     }
     case "USER_SET_IS_AUTH": {
       return {
         ...state,
         isAuth: payload,
+      };
+    }
+    case "USER_SET_FOUND_USERS": {
+      return {
+        ...state,
+        foundUsers: [...payload],
       };
     }
     default: {

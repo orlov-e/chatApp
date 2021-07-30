@@ -1,12 +1,13 @@
-import React, { useState } from "react";
+import React from "react";
 import List from "@material-ui/core/List";
 import User from "./User/User";
 import UserLoading from "../../../../../common/UserLoading";
+import { getDialogTime } from "../../../../../utils/formatTime";
 
-const Users = ({ dialogsArray, selectedDialog, thisAccountId }) => {
+const Users = ({ dialogsArray, selectedDialog, thisAccountId, foundUsers }) => {
   return (
     <div>
-      {dialogsArray ? (
+      {dialogsArray.length > 0 ? (
         <List>
           {dialogsArray.map((dialog) => {
             if (dialog.partner._id === thisAccountId) {
@@ -17,6 +18,7 @@ const Users = ({ dialogsArray, selectedDialog, thisAccountId }) => {
                   firstName={dialog.initiator.firstName}
                   lastName={dialog.initiator.lastName}
                   selectedDialog={selectedDialog}
+                  time={getDialogTime(dialog.updatedAt)}
                   photo={null}
                   isOnline={false}
                 />
@@ -28,6 +30,7 @@ const Users = ({ dialogsArray, selectedDialog, thisAccountId }) => {
                   userId={dialog.partner._id}
                   firstName={dialog.partner.firstName}
                   lastName={dialog.partner.lastName}
+                  time={getDialogTime(dialog.updatedAt)}
                   selectedDialog={selectedDialog}
                   photo={null}
                   isOnline={false}
@@ -38,7 +41,6 @@ const Users = ({ dialogsArray, selectedDialog, thisAccountId }) => {
         </List>
       ) : (
         <div>
-          <UserLoading />
           <UserLoading />
           <UserLoading />
           <UserLoading />

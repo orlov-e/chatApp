@@ -43,6 +43,7 @@ module.exports.createMessage = async (req, res) => {
     await message.populate(["user", "dialog"]).execPopulate();
 
     req.io.emit("SERVER:SEND_MESSAGE", message);
+    req.io.emit("SERVER:DIALOG_UPDATE_TIME", message.createdAt);
 
     res.status(200).json(message);
   } catch (e) {

@@ -4,7 +4,6 @@ import {
   Typography,
   ListItem,
   ListItemIcon,
-  ListItemText,
 } from "@material-ui/core";
 import ChatIcon from "@material-ui/icons/Chat";
 

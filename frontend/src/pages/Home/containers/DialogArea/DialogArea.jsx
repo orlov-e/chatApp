@@ -1,5 +1,5 @@
 import React, { useRef, useEffect } from "react";
-import { useDispatch, useSelector } from "react-redux";
+import { useDispatch } from "react-redux";
 import List from "@material-ui/core/List";
 import Message from "./components/Message";
 import NoMessages from "../../../../common/NoMessages";
@@ -11,6 +11,7 @@ import {
   fetchMessagesData,
   addMessage,
 } from "../../../../redux/actions/messages";
+import { getMessageTime } from "../../../../utils/formatTime";
 
 const DialogArea = ({ thisAccountId, messagesArray, selectedDialog }) => {
   const messagesEndRef = useRef(null);
@@ -21,12 +22,11 @@ const DialogArea = ({ thisAccountId, messagesArray, selectedDialog }) => {
   };
 
   const onNewMessage = (message) => {
-    debugger;
     dispatch(addMessage(message));
   };
 
   useEffect(() => {
-    if (selectedDialog) {
+    if (selectedDialog && messagesArray.length === 0) {
       dispatch(fetchMessagesData(selectedDialog));
     }
 
@@ -54,6 +54,7 @@ const DialogArea = ({ thisAccountId, messagesArray, selectedDialog }) => {
                     isMe={true}
                     text={message.text}
                     messageId={message._id}
+                    date={getMessageTime(message.createdAt)}
                   />
                 );
               } else {
@@ -62,6 +63,7 @@ const DialogArea = ({ thisAccountId, messagesArray, selectedDialog }) => {
                     isMe={false}
                     text={message.text}
                     messageId={message._id}
+                    date={getMessageTime(message.createdAt)}
                   />
                 );
               }

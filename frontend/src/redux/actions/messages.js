@@ -11,10 +11,8 @@ const setMessagesData = (data) => ({
 export const addMessage = (message) => (dispatch, getState) => {
   const { dialogs } = getState();
   const { selectedDialog } = dialogs;
-  debugger;
 
   if (selectedDialog === message.dialog._id) {
-    debugger;
     dispatch({
       type: "MESSAGES_ADD_MESSAGE",
       payload: message,

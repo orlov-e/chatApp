@@ -4,6 +4,13 @@ import SendIcon from "@material-ui/icons/Send";
 import { useFormik } from "formik";
 import { fetchSendMessage } from "../../../../../redux/actions/messages";
 import { useDispatch } from "react-redux";
+import * as yup from "yup";
+
+const validationSchema = yup.object({
+  textField: yup
+    .string()
+    .test("empty message", "Empty message", (message) => message.length !== 0),
+});
 
 const TypeField = ({ dialogId }) => {
   const dispatch = useDispatch();
@@ -12,6 +19,7 @@ const TypeField = ({ dialogId }) => {
     initialValues: {
       textField: "",
     },
+    validationSchema: validationSchema,
     onSubmit: (values, { resetForm }) => {
       dispatch(
         fetchSendMessage({ text: values.textField, dialogId: dialogId })
