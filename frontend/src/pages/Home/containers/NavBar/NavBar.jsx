@@ -1,6 +1,6 @@
 import React, { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import Profile from "./components/Profile";
+import Profile from "./components/Profile/Profile";
 import Search from "./components/Search";
 import Users from "./components/Users";
 import Grid from "@material-ui/core/Grid";
@@ -10,7 +10,7 @@ import { Divider } from "@material-ui/core";
 import socket from "../../../../core/socket";
 import CreateDialog from "./components/CreateDialog/CreateDialog";
 
-const NavBar = ({ _id, firstName, lastName, foundUsers }) => {
+const NavBar = ({ _id, firstName, lastName, avatar }) => {
   const dispatch = useDispatch();
   const { dialogsArray, selectedDialog } = useSelector(
     ({ dialogs }) => dialogs
@@ -31,11 +31,16 @@ const NavBar = ({ _id, firstName, lastName, foundUsers }) => {
       socket.removeListener("SERVER:DIALOG_CREATED", fetchDialogsData());
       socket.removeListener("SERVER:DIALOG_UPDATE_TIME", fetchDialogsData());
     };
-  }, []);
+  }, [dispatch]);
 
   return (
     <div>
-      <Profile _id={_id} firstName={firstName} lastName={lastName} />
+      <Profile
+        _id={_id}
+        firstName={firstName}
+        lastName={lastName}
+        avatar={avatar}
+      />
       <Divider />
       <CreateDialog />
       <Divider />

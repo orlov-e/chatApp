@@ -6,7 +6,7 @@ import Avatar from "@material-ui/core/Avatar";
 import Status from "../../../../../common/Status";
 import { GlassCard } from "../../../../../common/GlassCard";
 
-const Message = ({ isMe, text, date, messageId }) => {
+const Message = ({ isMe, text, date, messageId, isOnline, firstName, lastName, photo }) => {
   return (
     <div>
       {isMe ? (
@@ -25,8 +25,11 @@ const Message = ({ isMe, text, date, messageId }) => {
       ) : (
         <ListItem key={messageId} alignItems="flex-start">
           <ListItemIcon>
-            <Avatar alt="Remy Sharp" src="/static/images/avatar/1.jpg" />
-            <Status />
+            <Avatar
+              alt={`${firstName} ${lastName}`}
+              src={photo != null ? photo : "/static/images/avatar/1.jpg"}
+            />
+            {isOnline ? <Status /> : false}
           </ListItemIcon>
           <GlassCard>
             <ListItemText

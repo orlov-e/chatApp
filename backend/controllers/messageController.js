@@ -21,7 +21,6 @@ module.exports.createMessage = async (req, res) => {
     dialog: req.body.dialogId,
     user: req.user._id,
   };
-  console.log(postData)
 
   const message = new MessageModel(postData);
 

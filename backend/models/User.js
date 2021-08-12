@@ -1,6 +1,7 @@
 const mongoose = require("mongoose");
 const Schema = mongoose.Schema;
 const validator = require("validator");
+const differenceInMinutes = require("date-fns/differenceInMinutes");
 
 const userSchema = new Schema(
   {
@@ -32,22 +33,31 @@ const userSchema = new Schema(
     avatar: String,
     last_seen: {
       type: Date,
+      default: new Date(),
     },
   },
   {
+    virtuals: true,
     timestamps: true,
   }
 );
 
+userSchema.virtual("isOnline").get(function () {
+  return differenceInMinutes(new Date(), this.last_seen) < 4;
+});
+
 userSchema.methods.toJSON = function () {
   const user = this;
   const userObject = user.toObject();
-
+  
   delete userObject.password;
-  delete userObject.avatar;
   delete userObject.sendEmails;
-
+  
   return userObject;
 };
+
+
+userSchema.set('toObject', { virtuals: true })
+userSchema.set('toJSON', { virtuals: true })
 
 module.exports = mongoose.model("Users", userSchema);

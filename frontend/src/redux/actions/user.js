@@ -24,6 +24,7 @@ export const fetchUserData = () => (dispatch) => {
     .getMe()
     .then(({ data }) => {
       dispatch(setUserData(data));
+      window.localStorage["userId"] = data._id;
     })
     .catch((err) => {
       if (err.response.status === 401) {
@@ -42,7 +43,7 @@ export const fetchUserLogin = (postData) => (dispatch) => {
       dispatch(setIsAuth(true));
       return data;
     })
-    .catch(({ response }) => {
+    .catch((e) => {
       return false;
     });
 };
@@ -64,8 +65,29 @@ export const fetchUserRegister = (postData) => (dispatch) => {
     });
 };
 
+export const fetchUserLogout = (query) => (dispatch) => {
+  return userAPI.logout().then((res) => {
+    debugger;
+    if (res.status === 200) {
+      dispatch(setIsAuth(false));
+      delete window.localStorage.token;
+    }
+  });
+};
+
 export const fetchFindUsers = (query) => (dispatch) => {
   return userAPI.findUsers(query).then(({ data }) => {
     dispatch(setFoundUsers(data));
+  });
+};
+
+export const updateUserAvatar = (avatar) => (dispatch) => {
+  const fd = new FormData();
+  fd.append("image", avatar, avatar.name);
+  return userAPI.updateAvatar(fd).then((res) => {
+    if (res.status === 404) {
+      return false;
+    }
+    dispatch(fetchUserData());
   });
 };

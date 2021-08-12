@@ -1,5 +1,5 @@
 const initialState = {
-  dialogsArray: [],
+  dialogsArray: null,
   selectedDialog: window.location.pathname.split("dialog/")[1],
 };
 

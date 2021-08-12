@@ -4,7 +4,6 @@ const server = http.createServer(app);
 const { Server } = require("socket.io");
 const io = new Server(server, { cors: { origin: "*" } });
 
-
 const mongoose = require("mongoose");
 const bodyparser = require("body-parser");
 const dotenv = require("dotenv").config();
@@ -14,13 +13,14 @@ const messageRoutes = require("./routes/message");
 const cors = require("cors");
 const morgan = require("morgan");
 const passport = require("passport");
+const socketConnection = require("./middleware/socketConnection");
 
 mongoose
   .connect(process.env.MONGO_URI, {
     useNewUrlParser: true,
     useUnifiedTopology: true,
     useCreateIndex: true,
-    useFindAndModify: false
+    useFindAndModify: false,
   })
   .then(() => console.log("mongodb connected"))
   .catch((error) => console.log("error"));
@@ -35,16 +35,16 @@ app.use(
   })
 );
 app.use(morgan("dev"));
+app.disable('etag');
+
 app.use((req, res, next) => {
   req.io = io;
   return next();
 });
-
+socketConnection(io);
 
 app.use("/api", userRoutes);
 app.use("/api", dialogRoutes);
 app.use("/api", messageRoutes);
 
 module.exports = server;
-
-

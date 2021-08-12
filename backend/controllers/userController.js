@@ -2,11 +2,18 @@ const bcrypt = require("bcryptjs");
 const jwt = require("jsonwebtoken");
 const UserModel = require("../models/User");
 const errorHandler = require("../utils/errorHandler");
+const cloudinary = require("../core/cloudinary");
 
 module.exports.login = async function (req, res) {
   const candidate = await UserModel.findOne({
     email: req.body.email,
   });
+
+  if (req.body.rememberMe) {
+    expiresIn = "7d";
+  } else {
+    expiresIn = "1h";
+  }
 
   if (candidate) {
     const passwordResult = bcrypt.compareSync(
@@ -21,7 +28,7 @@ module.exports.login = async function (req, res) {
         },
         process.env.JWT_SECRET,
         {
-          expiresIn: "1h",
+          expiresIn: expiresIn,
         }
       );
 
@@ -83,6 +90,11 @@ module.exports.getMe = async function (req, res) {
   }
 };
 
+module.exports.logout = async function (req, res) {
+  req.logout();
+  res.status(200).json({ message: "Logout Successful" });
+};
+
 module.exports.findUsers = async function (req, res) {
   const query = req.query.query;
 
@@ -109,4 +121,24 @@ module.exports.findUsers = async function (req, res) {
   }
 
   res.status(200).json(users);
+};
+
+module.exports.uploadAvatar = async function (req, res) {
+  const id = req.user._id;
+
+  try {
+    const result = await cloudinary.uploader.upload(req.file.path);
+
+    if (!result) {
+      res.status(404).json({ message: "Cannot upload this file" });
+    }
+
+    const user = await UserModel.findById(id);
+
+    user.avatar = result.secure_url;
+    await user.save();
+    res.json(user);
+  } catch (e) {
+    errorHandler(res, e);
+  }
 };

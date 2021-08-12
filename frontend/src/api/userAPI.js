@@ -11,7 +11,13 @@ export const userAPI = {
   login(data) {
     return axios.post("auth/login", data);
   },
+  logout() {
+    return axios.get("auth/logout");
+  },
   findUsers(query) {
     return axios.get(`findUsers?query=${query}`);
+  },
+  updateAvatar(formDataFile) {
+    return axios.post(`upload_avatar`, formDataFile);
   },
 };

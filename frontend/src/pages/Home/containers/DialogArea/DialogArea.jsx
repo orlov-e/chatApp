@@ -34,6 +34,8 @@ const DialogArea = ({ thisAccountId, messagesArray, selectedDialog }) => {
     return () => {
       socket.removeListener("SERVER:SEND_MESSAGE");
     };
+
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [selectedDialog]);
 
   useEffect(() => {
@@ -55,6 +57,10 @@ const DialogArea = ({ thisAccountId, messagesArray, selectedDialog }) => {
                     text={message.text}
                     messageId={message._id}
                     date={getMessageTime(message.createdAt)}
+                    isOnline={message.user.isOnline}
+                    firstName={message.user.firstName}
+                    lastName={message.user.lastName}
+                    photo={null}
                   />
                 );
               } else {
@@ -64,6 +70,10 @@ const DialogArea = ({ thisAccountId, messagesArray, selectedDialog }) => {
                     text={message.text}
                     messageId={message._id}
                     date={getMessageTime(message.createdAt)}
+                    isOnline={message.user.isOnline}
+                    firstName={message.user.firstName}
+                    lastName={message.user.lastName}
+                    photo={null}
                   />
                 );
               }

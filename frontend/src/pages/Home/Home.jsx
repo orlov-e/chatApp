@@ -11,7 +11,7 @@ import NavBar from "./containers/NavBar/NavBar";
 const Home = () => {
   const classes = useStyles();
   const { userInfo, foundUsers } = useSelector(({ user }) => user);
-  const { _id, firstName, lastName } = userInfo;
+  const { _id, firstName, lastName, avatar } = userInfo;
   const { messagesArray } = useSelector(({ messages }) => messages);
   const { selectedDialog } = useSelector(({ dialogs }) => dialogs);
 
@@ -25,6 +25,7 @@ const Home = () => {
               _id={_id}
               firstName={firstName}
               lastName={lastName}
+              avatar={avatar}
               foundUsers={foundUsers}
             />
           </GlassCard>
