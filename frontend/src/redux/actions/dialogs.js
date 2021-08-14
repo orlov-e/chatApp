@@ -16,13 +16,15 @@ export const setSelectedDialog = (data) => ({
 export const fetchDialogsData = () => (dispatch) => {
   return dialogsAPI
     .getDialogs()
-    .then(({ data }) => {
-      dispatch(setDialogsData(data));
-    })
-    .catch((err) => {
-      if (err.response.status === 404) {
+    .then((res) => {
+      if (res.status === 404) {
         dispatch(setDialogsData(null));
       }
+
+      dispatch(setDialogsData(res.data));
+    })
+    .catch((e) => {
+      dispatch(setDialogsData([]));
     });
 };
 

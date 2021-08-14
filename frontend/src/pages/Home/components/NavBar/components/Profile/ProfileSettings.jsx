@@ -11,17 +11,21 @@ import {
   fetchUserLogout,
   updateUserAvatar,
 } from "../../../../../../redux/actions/user";
+import CircularProgress from "@material-ui/core/CircularProgress";
 
 export default function ProfieSettings({ handleClose, open, avatar }) {
   const dispatch = useDispatch();
 
   const [img, setImg] = React.useState(null);
   const [currentImg, setCurrentImg] = React.useState(null);
+  const [loading, setLoading] = React.useState(false);
 
   const handleSetAvatar = () => {
+    setLoading(true);
     dispatch(updateUserAvatar(img)).then(() => {
       handleClose();
       setImg(null);
+      setLoading(false);
     });
   };
 
@@ -76,22 +80,23 @@ export default function ProfieSettings({ handleClose, open, avatar }) {
         </DialogContent>
         <DialogActions>
           <Grid container justify="flex-start">
-            <Button
-              onClick={handleLogout}
-              color="secondary"
-            >
+            <Button onClick={handleLogout} color="secondary">
               Logout
             </Button>
           </Grid>
           <Grid container justify="flex-end">
-            <Button
-              autoFocus
-              disabled={!img}
-              onClick={handleSetAvatar}
-              color="primary"
-            >
-              Save changes
-            </Button>
+            {loading ? (
+              <CircularProgress size={34} />
+            ) : (
+              <Button
+                autoFocus
+                disabled={!img}
+                onClick={handleSetAvatar}
+                color="primary"
+              >
+                Save changes
+              </Button>
+            )}
           </Grid>
         </DialogActions>
       </Dialog>

@@ -14,10 +14,9 @@ import LockOutlinedIcon from "@material-ui/icons/LockOutlined";
 import { useFormik } from "formik";
 import { NavLink, Redirect } from "react-router-dom";
 import * as yup from "yup";
-import { GlassCard } from "../../../common/GlassCard";
-import { fetchUserRegister } from "../../../redux/actions/user";
-import Snackbar from "@material-ui/core/Snackbar";
-import Alert from "@material-ui/lab/Alert";
+import { GlassCard } from "../../../../common/GlassCard";
+import { fetchUserRegister } from "../../../../redux/actions/user";
+import SnackBar from "../../../../common/SnackBar";
 
 const validationSchema = yup.object({
   firstName: yup
@@ -90,16 +89,13 @@ const SignUp = () => {
 
   return (
     <Container component="main" maxWidth="xs">
-      <Snackbar
-        anchorOrigin={{ vertical: "top", horizontal: "center" }}
-        open={alert}
-        autoHideDuration={2000}
-        onClose={handleAlert}
-      >
-        <Alert onClose={handleAlert} severity="error">
-          This email is already taken.
-        </Alert>
-      </Snackbar>
+      {alert ? (
+        <SnackBar
+          text="This email is already taken."
+          alert={alert}
+          handleAlert={handleAlert}
+        ></SnackBar>
+      ) : null}
       {redirect ? <Redirect to="/signin" /> : false}
       <GlassCard blur="15">
         <CssBaseline />

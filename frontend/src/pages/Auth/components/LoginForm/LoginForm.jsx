@@ -11,13 +11,12 @@ import LockOutlinedIcon from "@material-ui/icons/LockOutlined";
 import Typography from "@material-ui/core/Typography";
 import { makeStyles } from "@material-ui/core/styles";
 import Container from "@material-ui/core/Container";
-import { GlassCard } from "../../../common/GlassCard";
+import { GlassCard } from "../../../../common/GlassCard";
 import * as yup from "yup";
 import { useFormik } from "formik";
-import { fetchUserLogin } from "../../../redux/actions/user";
+import { fetchUserLogin } from "../../../../redux/actions/user";
 import { useDispatch } from "react-redux";
-import Snackbar from "@material-ui/core/Snackbar";
-import Alert from "@material-ui/lab/Alert";
+import SnackBar from "../../../../common/SnackBar";
 
 const validationSchema = yup.object({
   email: yup
@@ -64,16 +63,13 @@ const SignIn = () => {
 
   return (
     <Container component="main" maxWidth="xs">
-      <Snackbar
-        anchorOrigin={{ vertical: "top", horizontal: "center" }}
-        open={alert}
-        autoHideDuration={3000}
-        onClose={handleAlert}
-      >
-        <Alert onClose={handleAlert} severity="error">
-          Wrong password or email.
-        </Alert>
-      </Snackbar>
+      {alert ? (
+        <SnackBar
+          text="Wrong password or email."
+          alert={alert}
+          handleAlert={handleAlert}
+        ></SnackBar>
+      ) : null}
       <GlassCard blur="15">
         <CssBaseline />
         <div className={classes.paper}>

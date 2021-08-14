@@ -60,7 +60,7 @@ const DialogArea = ({ thisAccountId, messagesArray, selectedDialog }) => {
                     isOnline={message.user.isOnline}
                     firstName={message.user.firstName}
                     lastName={message.user.lastName}
-                    photo={null}
+                    photo={message.user.avatar}
                   />
                 );
               } else {
@@ -73,7 +73,7 @@ const DialogArea = ({ thisAccountId, messagesArray, selectedDialog }) => {
                     isOnline={message.user.isOnline}
                     firstName={message.user.firstName}
                     lastName={message.user.lastName}
-                    photo={null}
+                    photo={message.user.avatar}
                   />
                 );
               }

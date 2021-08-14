@@ -127,13 +127,18 @@ module.exports.uploadAvatar = async function (req, res) {
   const id = req.user._id;
 
   try {
+    const user = await UserModel.findById(id);
+
+    if (user.avatar) {
+      const public_id = user.avatar.match(/upload\/(?:v\d+\/)?([^\.]+)/);
+      await cloudinary.uploader.destroy(public_id[1]);
+    }
+
     const result = await cloudinary.uploader.upload(req.file.path);
 
     if (!result) {
       res.status(404).json({ message: "Cannot upload this file" });
     }
-
-    const user = await UserModel.findById(id);
 
     user.avatar = result.secure_url;
     await user.save();

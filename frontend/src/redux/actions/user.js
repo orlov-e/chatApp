@@ -22,15 +22,19 @@ const setFoundUsers = (data) => ({
 export const fetchUserData = () => (dispatch) => {
   return userAPI
     .getMe()
-    .then(({ data }) => {
-      dispatch(setUserData(data));
-      window.localStorage["userId"] = data._id;
-    })
-    .catch((err) => {
-      if (err.response.status === 401) {
+    .then((res) => {
+      if (res.status === 401) {
         dispatch(setIsAuth(false));
         delete window.localStorage.token;
+        return;
       }
+
+      dispatch(setUserData(res.data));
+      window.localStorage["userId"] = res.data._id;
+    })
+    .catch((err) => {
+      dispatch(setIsAuth(false));
+      delete window.localStorage.token;
     });
 };
 export const fetchUserLogin = (postData) => (dispatch) => {
@@ -41,7 +45,7 @@ export const fetchUserLogin = (postData) => (dispatch) => {
       window.localStorage["token"] = token;
       window.axios.defaults.headers.common["Authorization"] = token;
       dispatch(setIsAuth(true));
-      return data;
+      return true;
     })
     .catch((e) => {
       return false;
@@ -50,24 +54,26 @@ export const fetchUserLogin = (postData) => (dispatch) => {
 export const fetchUserRegister = (postData) => (dispatch) => {
   return userAPI
     .register(postData)
-    .then(({ data }) => {
-      const { token } = data;
-      window.localStorage["token"] = token;
-      window.axios.defaults.headers.common["Authorization"] = token;
-      dispatch(setIsAuth(false));
-      return data;
-    })
-    .catch(({ response }) => {
-      if ((response.status = 409)) {
+    .then((res) => {
+      if ((res.status = 409)) {
         dispatch(setIsAuth(false));
         return false;
       }
+
+      const { token } = res.data;
+      window.localStorage["token"] = token;
+      window.axios.defaults.headers.common["Authorization"] = token;
+      dispatch(setIsAuth(false));
+      return true;
+    })
+    .catch((e) => {
+      dispatch(setIsAuth(false));
+      return false;
     });
 };
 
 export const fetchUserLogout = (query) => (dispatch) => {
   return userAPI.logout().then((res) => {
-    debugger;
     if (res.status === 200) {
       dispatch(setIsAuth(false));
       delete window.localStorage.token;

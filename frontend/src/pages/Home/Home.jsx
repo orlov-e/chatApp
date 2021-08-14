@@ -4,9 +4,9 @@ import { makeStyles } from "@material-ui/core/styles";
 import Grid from "@material-ui/core/Grid";
 import { Container } from "@material-ui/core";
 import { GlassCard } from "../../common/GlassCard";
-import Header from "./containers/Header/Header";
-import DialogArea from "./containers/DialogArea/DialogArea";
-import NavBar from "./containers/NavBar/NavBar";
+import Header from "./components/Header/Header";
+import DialogArea from "./components/DialogArea/DialogArea";
+import NavBar from "./components/NavBar/NavBar";
 
 const Home = () => {
   const classes = useStyles();
