@@ -16,7 +16,7 @@ const passport = require("passport");
 const socketConnection = require("./middleware/socketConnection");
 
 mongoose
-  .connect(process.env.MONGO_URI, {
+  .connect(process.env.MONGODB_URI || "mongodb://localhost:27017/chatApp", {
     useNewUrlParser: true,
     useUnifiedTopology: true,
     useCreateIndex: true,
@@ -34,8 +34,8 @@ app.use(
     extended: true,
   })
 );
-app.use(morgan("dev"));
-app.disable('etag');
+app.use(morgan("tiny"));
+app.disable("etag");
 
 app.use((req, res, next) => {
   req.io = io;
@@ -46,5 +46,13 @@ socketConnection(io);
 app.use("/api", userRoutes);
 app.use("/api", dialogRoutes);
 app.use("/api", messageRoutes);
+
+if (process.env.NODE_ENV === "production") {
+  app.use(express.static(path.join(__dirname, "../frontend/build")));
+
+  app.get("*", function (req, res) {
+    res.sendFile(path.join(__dirname, "client/build", "index.html"));
+  });
+}
 
 module.exports = server;
