@@ -83,3 +83,45 @@ module.exports.deleteDialog = async function (req, res) {
       });
     });
 };
+
+module.exports.searchDialogs = function (req, res) {
+  const query = req.query.query;
+  const id = req.user._id;
+
+  DialogModel.find()
+    .or([{ initiator: id }, { partner: id }])
+    .populate([
+      {
+        path: "initiator",
+        match: {
+          $or: [
+            { firstName: new RegExp(query, "i") },
+            { lastName: new RegExp(query, "i") },
+          ],
+        },
+      },
+      {
+        path: "partner",
+        match: {
+          $or: [
+            { firstName: new RegExp(query, "i") },
+            { lastName: new RegExp(query, "i") },
+          ],
+        },
+      },
+    ])
+    .exec(function (err, dialogs) {
+      if (err) {
+        res.status(404).json({ message: "dialogs not found" });
+      }
+
+      dialogs = dialogs.filter((dialog) => {
+        if (dialog.initiator === null && dialog.partner === null) {
+          return false;
+        }
+        return true;
+      });
+
+      res.status(200).json(dialogs);
+    });
+};

@@ -2,7 +2,7 @@ import React from "react";
 import { Snackbar } from "@material-ui/core";
 import Alert from "@material-ui/lab/Alert";
 
-const SnackBar = ({ text, alert, handleAlert }) => {
+const SnackBar = ({ text, alert, handleAlert, severity }) => {
   return (
     <Snackbar
       anchorOrigin={{ vertical: "top", horizontal: "center" }}
@@ -10,7 +10,7 @@ const SnackBar = ({ text, alert, handleAlert }) => {
       autoHideDuration={3000}
       onClose={handleAlert}
     >
-      <Alert onClose={handleAlert} severity="error">
+      <Alert onClose={handleAlert} severity={severity}>
         {text}
       </Alert>
     </Snackbar>

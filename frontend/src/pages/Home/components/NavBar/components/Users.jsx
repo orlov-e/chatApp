@@ -6,7 +6,7 @@ import { getDialogTime } from "../../../../../utils/formatTime";
 import { Grid, Typography } from "@material-ui/core";
 import ErrorOutlineIcon from "@material-ui/icons/ErrorOutline";
 
-const Users = ({ dialogsArray, selectedDialog, thisAccountId, foundUsers }) => {
+const Users = ({ dialogsArray, selectedDialog, thisAccountId }) => {
   return (
     <div>
       {dialogsArray !== null ? (
@@ -19,8 +19,7 @@ const Users = ({ dialogsArray, selectedDialog, thisAccountId, foundUsers }) => {
                     <User
                       dialogId={dialog._id}
                       userId={dialog.initiator._id}
-                      firstName={dialog.initiator.firstName}
-                      lastName={dialog.initiator.lastName}
+                      fullName={dialog.initiator.fullName}
                       selectedDialog={selectedDialog}
                       time={getDialogTime(dialog.updatedAt)}
                       photo={dialog.initiator.avatar || null}
@@ -32,8 +31,7 @@ const Users = ({ dialogsArray, selectedDialog, thisAccountId, foundUsers }) => {
                     <User
                       dialogId={dialog._id}
                       userId={dialog.partner._id}
-                      firstName={dialog.partner.firstName}
-                      lastName={dialog.partner.lastName}
+                      fullName={dialog.partner.fullName}
                       time={getDialogTime(dialog.updatedAt)}
                       selectedDialog={selectedDialog}
                       photo={dialog.partner.avatar || null}
@@ -55,7 +53,7 @@ const Users = ({ dialogsArray, selectedDialog, thisAccountId, foundUsers }) => {
                 <ErrorOutlineIcon color="primary" fontSize="large" />
               </Grid>
               <Grid item>
-                <Typography h6>You don't have any dialogs</Typography>
+                <Typography h6>Nothing found</Typography>
               </Grid>
             </Grid>
           )}

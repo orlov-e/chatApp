@@ -55,20 +55,15 @@ export const fetchUserRegister = (postData) => (dispatch) => {
   return userAPI
     .register(postData)
     .then((res) => {
-      if ((res.status = 409)) {
-        dispatch(setIsAuth(false));
-        return false;
-      }
-
-      const { token } = res.data;
-      window.localStorage["token"] = token;
-      window.axios.defaults.headers.common["Authorization"] = token;
       dispatch(setIsAuth(false));
-      return true;
+      if (res.status === 409) {
+        return false;
+      } else if (res.status === 201) {
+        return true;
+      }
     })
     .catch((e) => {
       dispatch(setIsAuth(false));
-      return false;
     });
 };
 

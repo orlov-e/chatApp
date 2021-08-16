@@ -46,8 +46,8 @@ const SignIn = () => {
 
   const formik = useFormik({
     initialValues: {
-      email: "test@mail.com",
-      password: "qwerty",
+      email: "",
+      password: "",
       rememberMe: false,
     },
     validationSchema: validationSchema,
@@ -68,6 +68,7 @@ const SignIn = () => {
           text="Wrong password or email."
           alert={alert}
           handleAlert={handleAlert}
+          severity={"error"}
         ></SnackBar>
       ) : null}
       <GlassCard blur="15">

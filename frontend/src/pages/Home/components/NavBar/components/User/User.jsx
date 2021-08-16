@@ -12,8 +12,7 @@ import { fetchMessagesData } from "../../../../../../redux/actions/messages";
 
 const User = ({
   userId,
-  firstName,
-  lastName,
+  fullName,
   photo,
   isOnline,
   dialogId,
@@ -41,14 +40,12 @@ const User = ({
         >
           <ListItemIcon>
             <Avatar
-              alt={`${firstName} ${lastName}`}
+              alt={fullName}
               src={photo != null ? photo : "/static/images/avatar/1.jpg"}
             />
             {isOnline ? <Status /> : <div></div>}
           </ListItemIcon>
-          <ListItemText
-            secondary={time}
-          >{`${firstName} ${lastName}`}</ListItemText>
+          <ListItemText secondary={time}>{fullName}</ListItemText>
         </ListItem>
         {/* <MoreButton show={false} options={["Delete"]}></MoreButton> */}
       </Link>

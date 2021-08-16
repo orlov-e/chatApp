@@ -46,18 +46,21 @@ userSchema.virtual("isOnline").get(function () {
   return differenceInMinutes(new Date(), this.last_seen) < 4;
 });
 
+userSchema.virtual("fullName").get(function () {
+  return `${this.firstName} ${this.lastName}`;
+});
+
 userSchema.methods.toJSON = function () {
   const user = this;
   const userObject = user.toObject();
-  
+
   delete userObject.password;
   delete userObject.sendEmails;
-  
+
   return userObject;
 };
 
-
-userSchema.set('toObject', { virtuals: true })
-userSchema.set('toJSON', { virtuals: true })
+userSchema.set("toObject", { virtuals: true });
+userSchema.set("toJSON", { virtuals: true });
 
 module.exports = mongoose.model("Users", userSchema);

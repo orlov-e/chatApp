@@ -26,4 +26,11 @@ router.delete(
   controller.deleteDialog
 );
 
+router.get(
+  "/dialogs/search",
+  passport.authenticate("jwt", { session: false }),
+  updateLastSeen,
+  controller.searchDialogs
+);
+
 module.exports = router;

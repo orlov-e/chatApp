@@ -33,9 +33,10 @@ const TypeField = ({ dialogId }) => {
       <Grid container style={{ padding: "20px" }}>
         <Grid item xs={11}>
           <TextField
+            autoComplete="off"
+            name="textField"
             autoFocus
             id="textField"
-            name="textField"
             value={formik.values.textField}
             onChange={formik.handleChange}
             label="Type Something"

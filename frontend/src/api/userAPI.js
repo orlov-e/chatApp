@@ -5,7 +5,6 @@ export const userAPI = {
     return axios.get("auth/me");
   },
   register(data) {
-    debugger;
     return axios.post("auth/register", data);
   },
   login(data) {

@@ -12,7 +12,7 @@ import CreateDialog from "./components/CreateDialog/CreateDialog";
 
 const NavBar = ({ _id, firstName, lastName, avatar }) => {
   const dispatch = useDispatch();
-  const { dialogsArray, selectedDialog } = useSelector(
+  const { dialogsArray, selectedDialog, foundDialogs } = useSelector(
     ({ dialogs }) => dialogs
   );
 
@@ -51,11 +51,19 @@ const NavBar = ({ _id, firstName, lastName, avatar }) => {
           overflowY: "auto",
         }}
       >
-        <Users
-          dialogsArray={dialogsArray}
-          selectedDialog={selectedDialog}
-          thisAccountId={_id}
-        />
+        {foundDialogs ? (
+          <Users
+            dialogsArray={foundDialogs}
+            selectedDialog={selectedDialog}
+            thisAccountId={_id}
+          />
+        ) : (
+          <Users
+            dialogsArray={dialogsArray}
+            selectedDialog={selectedDialog}
+            thisAccountId={_id}
+          />
+        )}
       </Grid>
     </div>
   );

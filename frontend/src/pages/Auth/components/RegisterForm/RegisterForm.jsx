@@ -54,35 +54,26 @@ const SignUp = () => {
   const [redirect, setRedirect] = useState(false);
 
   const handleAlert = () => {
-    debugger;
     setAlert((state) => !state);
-  };
-
-  const handleButton = () => {
-    setButton((state) => !state);
-  };
-
-  const handleRedirect = () => {
-    setRedirect((state) => !state);
   };
 
   const formik = useFormik({
     initialValues: {
-      firstName: "Test",
-      lastName: "Test",
-      email: "test@mail.com",
-      password: "qwerty",
+      firstName: "",
+      lastName: "",
+      email: "",
+      password: "",
       sendEmails: false,
     },
     validationSchema: validationSchema,
     onSubmit: async (values) => {
-      handleButton();
+      setButton(true);
       const res = await dispatch(fetchUserRegister(values));
-      handleButton();
+      setButton(false);
       if (!res) {
         handleAlert();
       } else {
-        handleRedirect();
+        setRedirect(true);
       }
     },
   });
@@ -94,9 +85,14 @@ const SignUp = () => {
           text="This email is already taken."
           alert={alert}
           handleAlert={handleAlert}
+          severity={"error"}
         ></SnackBar>
       ) : null}
-      {redirect ? <Redirect to="/signin" /> : false}
+      {redirect ? (
+        <div>
+          <Redirect to="/signin" />{" "}
+        </div>
+      ) : null}
       <GlassCard blur="15">
         <CssBaseline />
         <div className={classes.paper}>

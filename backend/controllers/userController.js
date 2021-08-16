@@ -102,7 +102,6 @@ module.exports.findUsers = async function (req, res) {
   const secondWord = query.split(" ")[1];
 
   const users = await UserModel.find().or([
-    { email: new RegExp(query, "i") },
     {
       firstName: new RegExp(firstWord, "i"),
       lastName: new RegExp(secondWord, "i"),
