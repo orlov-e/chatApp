@@ -103,6 +103,9 @@ module.exports.findUsers = async function (req, res) {
 
   const users = await UserModel.find().or([
     {
+      email: new RegExp(query, "i"),
+    },
+    {
       firstName: new RegExp(firstWord, "i"),
       lastName: new RegExp(secondWord, "i"),
     },

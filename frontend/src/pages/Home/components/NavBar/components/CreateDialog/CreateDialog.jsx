@@ -4,6 +4,7 @@ import Button from "@material-ui/core/Button";
 import Dialog from "@material-ui/core/Dialog";
 import DialogActions from "@material-ui/core/DialogActions";
 import DialogContent from "@material-ui/core/DialogContent";
+import { Typography } from "@material-ui/core";
 import TextField from "@material-ui/core/TextField";
 import Autocomplete from "@material-ui/lab/Autocomplete";
 import CircularProgress from "@material-ui/core/CircularProgress";
@@ -40,7 +41,6 @@ function CreateDialog() {
     function submit(value) {
       dispatch(fetchFindUsers(value));
     }
-  
 
     if (timeoutRef.current !== null) {
       clearTimeout(timeoutRef.current);
@@ -52,7 +52,8 @@ function CreateDialog() {
   }, [value, dispatch]);
 
   React.useEffect(() => {
-    setOptions(foundUsers);
+    debugger;
+    setOptions([...foundUsers]);
   }, [foundUsers]);
 
   React.useEffect(() => {
@@ -89,8 +90,12 @@ function CreateDialog() {
           <DialogContent>
             <br></br>
             <div>
+              <Typography style={{ paddingBottom: "10px" }}>
+                Enter user name or email.
+              </Typography>
               <Autocomplete
                 id="user-search"
+                filterSelectedOptions
                 fullWidth
                 open={open}
                 onOpen={() => {
@@ -102,13 +107,10 @@ function CreateDialog() {
                 getOptionSelected={(option, value) => {
                   setUser(`${option._id}`);
 
-                  return (
-                    `${option.firstName} ${option.lastName}` ===
-                    `${value.firstName} ${value.lastName}`
-                  );
+                  return option.fullName === value.fullName;
                 }}
                 getOptionLabel={(option) => {
-                  return `${option.firstName} ${option.lastName}`;
+                  return `${option.fullName} | E-mail: ${option.email}`;
                 }}
                 options={options}
                 loading={loading}

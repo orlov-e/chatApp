@@ -6,7 +6,7 @@ const io = new Server(server, { cors: { origin: "*" } });
 
 const mongoose = require("mongoose");
 const bodyparser = require("body-parser");
-const dotenv = require("dotenv").config();
+const dotenv = require("dotenv").config({ path: __dirname + "/.env" });
 const userRoutes = require("./routes/user");
 const dialogRoutes = require("./routes/dialog");
 const messageRoutes = require("./routes/message");
@@ -36,6 +36,7 @@ app.use(
 );
 app.use(morgan("tiny"));
 app.disable("etag");
+console.log(process.env.JWT_SECRET);
 
 app.use((req, res, next) => {
   req.io = io;
