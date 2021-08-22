@@ -29,8 +29,8 @@ const Message = ({
           </GlassCard>
           <ListItemIcon style={{ justifyContent: "flex-end" }}>
             <Avatar
-              alt="Remy Sharp"
-              src={photo != null ? photo : "/static/images/avatar/1.jpg"}
+              alt={`${firstName} ${lastName}`}
+              src={photo ? photo : "/static/images/avatar/1.jpg"}
             />
           </ListItemIcon>
         </ListItem>
@@ -39,7 +39,7 @@ const Message = ({
           <ListItemIcon>
             <Avatar
               alt={`${firstName} ${lastName}`}
-              src={photo != null ? photo : "/static/images/avatar/1.jpg"}
+              src={photo ? photo : "/static/images/avatar/1.jpg"}
             />
             {isOnline ? <Status /> : false}
           </ListItemIcon>

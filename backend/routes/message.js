@@ -6,21 +6,21 @@ const updateLastSeen = require("../middleware/updateLastSeen");
 
 //localhost:3001/api/messages
 router.get(
-  "/message",
+  "/messages",
   passport.authenticate("jwt", { session: false }),
   updateLastSeen,
   controller.getMessages
 );
 //localhost:3001/api/messages
 router.post(
-  "/message",
+  "/messages",
   passport.authenticate("jwt", { session: false }),
   updateLastSeen,
   controller.createMessage
 );
 //localhost:3001/api/messages
 router.delete(
-  "/message",
+  "/messages",
   passport.authenticate("jwt", { session: false }),
   updateLastSeen,
   controller.deleteMessage

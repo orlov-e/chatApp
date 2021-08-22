@@ -40,8 +40,7 @@ const Profile = ({ _id, firstName, lastName, avatar }) => {
       ) : (
         <UserLoading />
       )}
-      <ProfileSettings
-        avatar={avatar}
+      <ProfileSettings  
         handleClickOpen={handleClickOpen}
         handleClose={handleClose}
         open={open}

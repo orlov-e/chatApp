@@ -52,7 +52,6 @@ function CreateDialog() {
   }, [value, dispatch]);
 
   React.useEffect(() => {
-    debugger;
     setOptions([...foundUsers]);
   }, [foundUsers]);
 
@@ -104,13 +103,20 @@ function CreateDialog() {
                 onClose={() => {
                   setOpen(false);
                 }}
-                getOptionSelected={(option, value) => {
-                  setUser(`${option._id}`);
-
-                  return option.fullName === value.fullName;
-                }}
-                getOptionLabel={(option) => {
-                  return `${option.fullName} | E-mail: ${option.email}`;
+                getOptionLabel={(option) => option.fullName}
+                renderOption={(option, state) => {
+                  return (
+                    <React.Fragment>
+                      <span
+                        selected={state.selected}
+                        onClick={() => {
+                          setUser(option._id);
+                        }}
+                      >
+                        {option.fullName} | E-mail: {option.email}
+                      </span>
+                    </React.Fragment>
+                  );
                 }}
                 options={options}
                 loading={loading}

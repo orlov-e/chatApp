@@ -1,8 +1,8 @@
 import React from "react";
 import List from "@material-ui/core/List";
-import User from "./User/User";
-import UserLoading from "../../../../../common/UserLoading";
-import { getDialogTime } from "../../../../../utils/formatTime";
+import User from "./User";
+import UserLoading from "../../../../../../common/UserLoading";
+import { getDialogTime } from "../../../../../../utils/formatTime";
 import { Grid, Typography } from "@material-ui/core";
 import ErrorOutlineIcon from "@material-ui/icons/ErrorOutline";
 
@@ -22,7 +22,7 @@ const Users = ({ dialogsArray, selectedDialog, thisAccountId }) => {
                       fullName={dialog.initiator.fullName}
                       selectedDialog={selectedDialog}
                       time={getDialogTime(dialog.updatedAt)}
-                      photo={dialog.initiator.avatar || null}
+                      avatar={dialog.initiator.avatar || null}
                       isOnline={dialog.initiator.isOnline}
                     />
                   );
@@ -34,7 +34,7 @@ const Users = ({ dialogsArray, selectedDialog, thisAccountId }) => {
                       fullName={dialog.partner.fullName}
                       time={getDialogTime(dialog.updatedAt)}
                       selectedDialog={selectedDialog}
-                      photo={dialog.partner.avatar || null}
+                      avatar={dialog.partner.avatar || null}
                       isOnline={dialog.partner.isOnline}
                     />
                   );

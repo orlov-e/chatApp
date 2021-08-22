@@ -1,8 +1,8 @@
 import React, { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import Profile from "./components/Profile/Profile";
-import Search from "./components/Search";
-import Users from "./components/Users";
+import Search from "./components/Search/Search";
+import Users from "./components/User/Users";
 import Grid from "@material-ui/core/Grid";
 import { fetchDialogsData } from "../../../../redux/actions/dialogs";
 import { fetchUserData } from "../../../../redux/actions/user";

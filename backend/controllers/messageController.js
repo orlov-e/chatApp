@@ -44,7 +44,10 @@ module.exports.createMessage = async (req, res) => {
     req.io.emit("SERVER:SEND_MESSAGE", message);
     req.io.emit("SERVER:DIALOG_UPDATE_TIME", message.createdAt);
 
-    res.status(200).json(message);
+    res.status(200).json({
+      status: "success",
+      message: "message created",
+    });
   } catch (e) {
     errorHandler(res, e);
   }

@@ -1,10 +1,12 @@
-const app = require("express")();
+const express = require("express");
+const app = express();
 const http = require("http");
 const server = http.createServer(app);
 const { Server } = require("socket.io");
 const io = new Server(server, { cors: { origin: "*" } });
 
 const mongoose = require("mongoose");
+const path = require("path");
 const bodyparser = require("body-parser");
 const dotenv = require("dotenv").config({ path: __dirname + "/.env" });
 const userRoutes = require("./routes/user");
@@ -23,7 +25,7 @@ mongoose
     useFindAndModify: false,
   })
   .then(() => console.log("mongodb connected"))
-  .catch((error) => console.log("error"));
+  .catch((error) => console.log("error:" + error));
 
 app.use(passport.initialize());
 require("./middleware/passport")(passport);
@@ -36,7 +38,6 @@ app.use(
 );
 app.use(morgan("tiny"));
 app.disable("etag");
-console.log(process.env.JWT_SECRET);
 
 app.use((req, res, next) => {
   req.io = io;
@@ -49,10 +50,10 @@ app.use("/api", dialogRoutes);
 app.use("/api", messageRoutes);
 
 if (process.env.NODE_ENV === "production") {
-  app.use(express.static(path.join(__dirname, "../frontend/build")));
+  app.use(express.static("frontend/build"));
 
   app.get("*", function (req, res) {
-    res.sendFile(path.join(__dirname, "client/build", "index.html"));
+    res.sendFile(path.resolve(__dirname, "../frontend", "build", "index.html"));
   });
 }
 

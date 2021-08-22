@@ -83,6 +83,7 @@ module.exports.getMe = async function (req, res) {
 
   if (!user) {
     res.status(403).json({
+      status: "error",
       message: "user not found",
     });
   } else {
@@ -92,7 +93,10 @@ module.exports.getMe = async function (req, res) {
 
 module.exports.logout = async function (req, res) {
   req.logout();
-  res.status(200).json({ message: "Logout Successful" });
+  res.status(200).json({
+    status: "success",
+    message: "Logout Successful",
+  });
 };
 
 module.exports.findUsers = async function (req, res) {
@@ -139,7 +143,10 @@ module.exports.uploadAvatar = async function (req, res) {
     const result = await cloudinary.uploader.upload(req.file.path);
 
     if (!result) {
-      res.status(404).json({ message: "Cannot upload this file" });
+      res.status(404).json({
+        status: "error",
+        message: "cannot upload this image",
+      });
     }
 
     user.avatar = result.secure_url;

@@ -2,7 +2,7 @@ import React from "react";
 import { useDispatch } from "react-redux";
 import Grid from "@material-ui/core/Grid";
 import TextField from "@material-ui/core/TextField";
-import { setFindDialogs } from "../../../../../redux/actions/dialogs";
+import { setFindDialogs } from "../../../../../../redux/actions/dialogs";
 
 const Search = () => {
   const dispatch = useDispatch();
