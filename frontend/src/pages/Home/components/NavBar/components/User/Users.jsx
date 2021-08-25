@@ -6,7 +6,7 @@ import { getDialogTime } from "../../../../../../utils/formatTime";
 import { Grid, Typography } from "@material-ui/core";
 import ErrorOutlineIcon from "@material-ui/icons/ErrorOutline";
 
-const Users = ({ dialogsArray, selectedDialog, thisAccountId }) => {
+const Users = React.memo(({ dialogsArray, selectedDialog, thisAccountId }) => {
   return (
     <div>
       {dialogsArray !== null ? (
@@ -70,6 +70,6 @@ const Users = ({ dialogsArray, selectedDialog, thisAccountId }) => {
       )}
     </div>
   );
-};
+});
 
 export default Users;

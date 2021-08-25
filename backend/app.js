@@ -36,7 +36,7 @@ app.use(
     extended: true,
   })
 );
-app.use(morgan("tiny"));
+app.use(morgan("dev"));
 app.disable("etag");
 
 app.use((req, res, next) => {

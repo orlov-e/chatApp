@@ -41,7 +41,7 @@ const User = ({
           <ListItemIcon>
             <Avatar
               alt={fullName}
-              src={photo != null ? photo : "/static/images/avatar/1.jpg"}
+              src={photo ? photo : "/static/images/avatar/1.jpg"}
             />
             {isOnline ? <Status /> : <div></div>}
           </ListItemIcon>

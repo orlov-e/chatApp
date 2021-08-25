@@ -7,10 +7,10 @@ import Avatar from "@material-ui/core/Avatar";
 import UserLoading from "../../../../../../common/UserLoading";
 import ProfileSettings from "./ProfileSettings";
 
-const Profile = ({ _id, firstName, lastName, avatar }) => {
+const Profile = React.memo(({ _id, firstName, lastName, avatar }) => {
   const fullName = `${firstName} ${lastName}`;
   const [open, setOpen] = React.useState(false);
-
+  
   const handleClickOpen = () => {
     setOpen(true);
   };
@@ -47,6 +47,6 @@ const Profile = ({ _id, firstName, lastName, avatar }) => {
       />
     </div>
   );
-};
+});
 
 export default Profile;
