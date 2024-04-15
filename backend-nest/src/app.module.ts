@@ -1,6 +1,6 @@
 import { Module } from '@nestjs/common';
 import { ConfigModule } from '@nestjs/config';
-import { UserModule } from '#src/api/users/users.module';
+import { UsersModule } from '#src/api/users/users.module';
 import { AuthModule } from '#api/auth/auth.module';
 
 @Module({
@@ -9,7 +9,7 @@ import { AuthModule } from '#api/auth/auth.module';
 			envFilePath: process.env.ENV_PATH,
 			isGlobal: true,
 		}),
-		UserModule,
+		UsersModule,
 		AuthModule,
 	],
 	controllers: [],

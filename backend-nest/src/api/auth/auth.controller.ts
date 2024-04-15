@@ -1,9 +1,8 @@
 import { Body, Controller, Post } from '@nestjs/common';
-import { UnauthorizedException } from '@nestjs/common';
 import { ApiTags, ApiOkResponse, ApiUnauthorizedResponse, ApiOperation } from '@nestjs/swagger';
-import { ExceptionResponseDto } from '#common/dto';
+import { ExceptionResponseDto, SuccessResponseDto } from '#common/dto';
 import { AuthService } from './auth.service';
-import { LoginRequestDTO, LoginResponseDTO } from './dto';
+import { LoginRequestDTO, LoginResponseDTO, RegisterRequestDTO } from './dto';
 import { Public } from './guards/public.decorator';
 
 @Controller('auth')
@@ -11,7 +10,7 @@ import { Public } from './guards/public.decorator';
 export class AuthController {
 	constructor(private readonly authService: AuthService) {}
 
-	@Post('/sign-in')
+	@Post('/login')
 	@Public()
 	@ApiOperation({ description: 'Log in and get JWT token.' })
 	@ApiOkResponse({
@@ -24,14 +23,22 @@ export class AuthController {
 	})
 	public async login(@Body() data: LoginRequestDTO): Promise<LoginResponseDTO> {
 		const { token } = await this.authService.login(data.email, data.password);
-		try {
-			return { token };
-		} catch (err) {
-			throw new UnauthorizedException('Invalid token');
-		}
+		return { token };
 	}
 
-	public async register(@Body() data: any): Promise<any> {
-		return await this.authService.register(data);
+	@Post('/register')
+	@Public()
+	@ApiOperation({ description: 'Register a new user.' })
+	@ApiOkResponse({
+		description: 'User registered successfully.',
+		type: SuccessResponseDto,
+	})
+	@ApiUnauthorizedResponse({
+		description: 'User already exists.',
+		type: ExceptionResponseDto,
+	})
+	public async register(@Body() data: RegisterRequestDTO) {
+		await this.authService.register(data);
+		return { message: 'User registered successfully.' };
 	}
 }

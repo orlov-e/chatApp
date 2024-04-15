@@ -1,7 +1,7 @@
 import { ApiProperty } from '@nestjs/swagger';
 import { IsEmail } from 'class-validator';
 
-export default class LoginRequestDTO {
+export class LoginRequestDTO {
 	@ApiProperty({
 		type: 'string',
 		description: 'User valid email address.',
@@ -16,4 +16,9 @@ export default class LoginRequestDTO {
 		required: true,
 	})
 	password: string;
+}
+
+export class LoginResponseDTO {
+	@ApiProperty({ type: 'string', description: 'JWT token.', required: true })
+	token: string;
 }

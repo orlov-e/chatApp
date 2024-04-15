@@ -1,11 +1,11 @@
 const userRoles = [
 	{
 		id: 1,
-		role: 'admin',
+		role: 'user',
 	},
 	{
 		id: 2,
-		role: 'manager',
+		role: 'admin',
 	},
 ];
 

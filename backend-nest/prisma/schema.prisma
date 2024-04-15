@@ -16,7 +16,6 @@ model User {
   password         String
   firstName        String
   lastName         String
-  sendEmails       Boolean?
   avatar           String?
   last_seen        DateTime? @default(now())
   DialogsInitiator Dialog[]  @relation("InitiatorToDialog")

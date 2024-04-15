@@ -1,4 +1,4 @@
-import LoginRequestDTO from './login.request.dto';
-import LoginResponseDTO from './login.response.dto';
+import { LoginRequestDTO, LoginResponseDTO } from './login.dto';
+import { RegisterRequestDTO } from './register.dto';
 
-export { LoginRequestDTO, LoginResponseDTO };
+export { LoginRequestDTO, LoginResponseDTO, RegisterRequestDTO };

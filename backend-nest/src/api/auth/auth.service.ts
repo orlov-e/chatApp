@@ -3,6 +3,7 @@ import { ConfigService } from '@nestjs/config';
 import { JwtService } from '@nestjs/jwt';
 import { UsersService } from '#src/api/users/users.service';
 import Password from '#common/utils/password';
+import { RegisterRequestDTO } from './dto';
 
 @Injectable()
 export class AuthService {
@@ -31,8 +32,11 @@ export class AuthService {
 		return { token };
 	}
 
-	public async register(data: any) {
-		const user = await this.usersService.create(data);
-		return user;
+	public async register(data: RegisterRequestDTO) {
+		const userExists = await this.usersService.getByEmail(data.email);
+		if (userExists) throw new Error('User already exists');
+
+		const hashedPassword = await Password.toHash(data.password);
+		return await this.usersService.create({ ...data, password: hashedPassword });
 	}
 }
