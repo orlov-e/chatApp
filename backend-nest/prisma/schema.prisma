@@ -1,0 +1,63 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id               Int       @id @default(autoincrement())
+  email            String    @unique
+  password         String
+  firstName        String
+  lastName         String
+  avatar           String?
+  last_seen        DateTime? @default(now())
+  DialogsInitiator Dialog[]  @relation("InitiatorToDialog")
+  DialogsPartner   Dialog[]  @relation("PartnerToDialog")
+  Message          Message[]
+  UserRoles        UserRole[]
+}
+
+model Role {
+  id        Int       @id @default(autoincrement())
+  name      String    @unique
+  UserRoles UserRole[]
+}
+
+model UserRole {
+  userId Int
+  user   User   @relation(fields: [userId], references: [id])
+  roleId Int
+  role   Role   @relation(fields: [roleId], references: [id])
+
+  @@id([userId, roleId])
+}
+
+model Dialog {
+  id            Int       @id @default(autoincrement())
+  initiator     User      @relation("InitiatorToDialog", fields: [initiatorId], references: [id])
+  initiatorId   Int
+  partner       User      @relation("PartnerToDialog", fields: [partnerId], references: [id])
+  partnerId     Int
+  lastMessageId Int?
+  createdAt     DateTime  @default(now())
+  updatedAt     DateTime  @updatedAt
+  Message       Message[]
+}
+
+model Message {
+  id        Int      @id @default(autoincrement())
+  dialog    Dialog   @relation(fields: [dialogId], references: [id])
+  dialogId  Int
+  sender    User     @relation(fields: [senderId], references: [id])
+  senderId  Int
+  text      String
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}

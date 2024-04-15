@@ -1,0 +1,20 @@
+# Ignore node_modules directory
+node_modules/
+
+# Ignore build output directory
+dist/
+
+# Ignore logs directory
+logs/
+
+# Ignore coverage reports directory
+coverage/
+
+# Ignore any files or directories starting with a dot
+.*
+
+# Ignore any files with a .js extension in the root directory
+*.js
+
+# Ignore any files with a .js extension in the src directory
+src/**/*.js
