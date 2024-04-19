@@ -10,14 +10,15 @@ import { Divider } from "@material-ui/core";
 import socket from "../../../../core/socket";
 import CreateDialog from "./components/CreateDialog/CreateDialog";
 
-const NavBar = ({ _id, firstName, lastName, avatar }) => {
+const NavBar = ({ id, firstName, lastName, avatar }) => {
   const dispatch = useDispatch();
   const { dialogsArray, selectedDialog, foundDialogs } = useSelector(
     ({ dialogs }) => dialogs
   );
 
   useEffect(() => {
-    dispatch(fetchUserData());
+    const userId = localStorage.getItem("userId");
+    dispatch(fetchUserData(userId));
     dispatch(fetchDialogsData());
 
     socket.on("SERVER:DIALOG_CREATED", (dialogObj) => {
@@ -36,7 +37,7 @@ const NavBar = ({ _id, firstName, lastName, avatar }) => {
   return (
     <div>
       <Profile
-        _id={_id}
+        id={id}
         firstName={firstName}
         lastName={lastName}
         avatar={avatar}
@@ -55,13 +56,13 @@ const NavBar = ({ _id, firstName, lastName, avatar }) => {
           <Users
             dialogsArray={foundDialogs}
             selectedDialog={selectedDialog}
-            thisAccountId={_id}
+            thisAccountId={id}
           />
         ) : (
           <Users
             dialogsArray={dialogsArray}
             selectedDialog={selectedDialog}
-            thisAccountId={_id}
+            thisAccountId={id}
           />
         )}
       </Grid>

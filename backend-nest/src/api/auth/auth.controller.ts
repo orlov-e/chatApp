@@ -1,4 +1,4 @@
-import { Body, Controller, Post } from '@nestjs/common';
+import { Body, Controller, HttpCode, Post } from '@nestjs/common';
 import { ApiTags, ApiOkResponse, ApiUnauthorizedResponse, ApiOperation } from '@nestjs/swagger';
 import { ExceptionResponseDto, SuccessResponseDto } from '#common/dto';
 import { AuthService } from './auth.service';
@@ -13,6 +13,7 @@ export class AuthController {
 	@Post('/login')
 	@Public()
 	@ApiOperation({ description: 'Log in and get JWT token.' })
+	@HttpCode(200)
 	@ApiOkResponse({
 		description: 'Signed in successfully.',
 		type: LoginResponseDTO,
@@ -29,6 +30,7 @@ export class AuthController {
 	@Post('/register')
 	@Public()
 	@ApiOperation({ description: 'Register a new user.' })
+	@HttpCode(200)
 	@ApiOkResponse({
 		description: 'User registered successfully.',
 		type: SuccessResponseDto,

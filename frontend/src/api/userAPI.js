@@ -1,8 +1,8 @@
 import axios from "./../core/axios";
 
 export const userAPI = {
-  getMe() {
-    return axios.get("auth/me");
+  getMe(userId) {
+    return axios.get(`users/${userId}`);
   },
   register(data) {
     return axios.post("auth/register", data);

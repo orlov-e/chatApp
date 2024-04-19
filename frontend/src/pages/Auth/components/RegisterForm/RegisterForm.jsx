@@ -63,7 +63,6 @@ const SignUp = () => {
       lastName: "",
       email: "",
       password: "",
-      sendEmails: false,
     },
     validationSchema: validationSchema,
     onSubmit: async (values) => {
@@ -168,24 +167,6 @@ const SignUp = () => {
                     formik.touched.password && Boolean(formik.errors.password)
                   }
                   helperText={formik.touched.password && formik.errors.password}
-                />
-              </Grid>
-              <Grid item xs={12}>
-                <FormControlLabel
-                  value={formik.values.sendEmails}
-                  control={
-                    <Checkbox
-                      checked={formik.values.sendEmails}
-                      onChange={() =>
-                        formik.setFieldValue(
-                          "sendEmails",
-                          !formik.values.sendEmails
-                        )
-                      }
-                      color="primary"
-                    />
-                  }
-                  label="I want to receive inspiration, marketing promotions and updates via email."
                 />
               </Grid>
             </Grid>

@@ -1,3 +1,4 @@
+import { jwtDecode } from "jwt-decode";
 import { userAPI } from "../../api/userAPI";
 
 const USER_SET_DATA = "USER_SET_DATA";
@@ -19,9 +20,9 @@ const setFoundUsers = (data) => ({
   payload: data,
 });
 
-export const fetchUserData = () => (dispatch) => {
+export const fetchUserData = (userId) => (dispatch) => {
   return userAPI
-    .getMe()
+    .getMe(userId)
     .then((res) => {
       if (res.status === 401) {
         dispatch(setIsAuth(false));
@@ -30,7 +31,6 @@ export const fetchUserData = () => (dispatch) => {
       }
 
       dispatch(setUserData(res.data));
-      window.localStorage["userId"] = res.data._id;
     })
     .catch((err) => {
       dispatch(setIsAuth(false));
@@ -42,6 +42,8 @@ export const fetchUserLogin = (postData) => (dispatch) => {
     .login(postData)
     .then(({ data }) => {
       const { token } = data;
+      const decodedToken = jwtDecode(token);
+      window.localStorage["userId"] = decodedToken.id;
       window.localStorage["token"] = token;
       window.axios.defaults.headers.common["Authorization"] = token;
       dispatch(setIsAuth(true));
