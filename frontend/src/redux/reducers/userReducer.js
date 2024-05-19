@@ -6,7 +6,7 @@ const initialState = {
 		email: null,
 	},
 	token: window.localStorage.token,
-	isAuth: !!true,
+	isAuth: !!window.localStorage.token,
 	foundUsers: [],
 };
 

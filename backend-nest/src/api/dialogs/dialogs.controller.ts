@@ -66,8 +66,8 @@ export class DialogsController {
 		description: 'Dialog not found.',
 		type: ExceptionResponseDto,
 	})
-	public async deleteDialog(@UserId() userId: number, @Param('id') dialogId: number) {
-		const deletedDialog = await this.dialogsService.deleteDialog(dialogId, userId);
+	public async deleteDialog(@UserId() userId: number, @Param('id') dialogId: string) {
+		const deletedDialog = await this.dialogsService.deleteDialog(+dialogId, userId);
 		if (!deletedDialog) throw new BadRequestException('Dialog not deleted');
 		return { message: 'Dialog deleted' };
 	}

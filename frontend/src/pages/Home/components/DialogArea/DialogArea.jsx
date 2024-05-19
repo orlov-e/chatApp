@@ -19,6 +19,7 @@ const DialogArea = ({ thisAccountId, messagesArray, selectedDialog }) => {
 	};
 
 	const onNewMessage = (message) => {
+		debugger;
 		dispatch(addMessage(message));
 	};
 
@@ -47,40 +48,26 @@ const DialogArea = ({ thisAccountId, messagesArray, selectedDialog }) => {
 				) : (
 					<List>
 						{messagesArray.map((message) => {
-							if (message.user.id === thisAccountId) {
-								return (
-									<Message
-										isMe={true}
-										text={message.text}
-										messageId={message.id}
-										date={getMessageTime(message.createdAt)}
-										isOnline={message.user.isOnline}
-										firstName={message.user.firstName}
-										lastName={message.user.lastName}
-										photo={message.user.avatar}
-									/>
-								);
-							} else {
-								return (
-									<Message
-										isMe={false}
-										text={message.text}
-										messageId={message.id}
-										date={getMessageTime(message.createdAt)}
-										isOnline={message.user.isOnline}
-										firstName={message.user.firstName}
-										lastName={message.user.lastName}
-										photo={message.user.avatar}
-									/>
-								);
-							}
+							const isMe = message.sender.id === thisAccountId;
+							return (
+								<Message
+									isMe={isMe}
+									text={message.text}
+									messageId={message.id}
+									date={getMessageTime(message.createdAt)}
+									isOnline={message.sender.isOnline}
+									firstName={message.sender.firstName}
+									lastName={message.sender.lastName}
+									photo={message.sender.avatar}
+								/>
+							);
 						})}
 						<div ref={messagesEndRef}></div>
 					</List>
 				)}
 			</Grid>
 			<Divider />
-			<TypeField dialogId={selectedDialog} />
+			<TypeField dialogId={selectedDialog} thisAccountId={thisAccountId} />
 		</div>
 	);
 };

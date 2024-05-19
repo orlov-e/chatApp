@@ -19,7 +19,7 @@ const Header = () => {
                 color="primary"
                 style={{ paddingRight: "5px" }}
               ></ChatIcon>
-              <span style={{ color:"white"}}>Chat App</span>
+              <span style={{ color:"white"}}>Chat</span>
             </ListItemIcon>
           </ListItem>
         </Typography>

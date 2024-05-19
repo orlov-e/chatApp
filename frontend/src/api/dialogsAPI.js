@@ -7,4 +7,7 @@ export const dialogsAPI = {
   getDialogs() {
     return axios.get("/dialogs");
   },
+  deleteDialog(dialogId) {
+    return axios.delete(`/dialogs/${dialogId}`);
+  }
 };

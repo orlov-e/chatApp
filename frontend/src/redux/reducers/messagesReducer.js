@@ -11,6 +11,7 @@ const messagesReducer = (state = initialState, { type, payload }) => {
       };
     }
     case "MESSAGES_ADD_MESSAGE": {
+      debugger;
       return {
         ...state,
         messagesArray: [...state.messagesArray, payload],

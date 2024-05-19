@@ -28,4 +28,11 @@ export default class ExceptionResponseDto {
 		required: true,
 	})
 	timestamp: string;
+
+	@ApiProperty({
+		type: 'string',
+		description: 'User avatar URL.',
+		required: true,
+	})
+	avatar: string;
 }

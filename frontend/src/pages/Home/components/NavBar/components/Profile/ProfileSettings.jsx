@@ -8,12 +8,13 @@ import DialogContent from "@material-ui/core/DialogContent";
 import DialogActions from "@material-ui/core/DialogActions";
 import { Grid } from "@material-ui/core";
 import {
+  fetchUserData,
   fetchUserLogout,
   updateUserAvatar,
 } from "../../../../../../redux/actions/user";
 import CircularProgress from "@material-ui/core/CircularProgress";
 
-export default function ProfieSettings({ handleClose, open, avatar }) {
+export default function ProfieSettings({ userID, handleClose, open, avatar }) {
   const dispatch = useDispatch();
 
   const [img, setImg] = React.useState(null);
@@ -26,6 +27,7 @@ export default function ProfieSettings({ handleClose, open, avatar }) {
       handleClose();
       setImg(null);
       setLoading(false);
+      dispatch(fetchUserData(userID));
     });
   };
 

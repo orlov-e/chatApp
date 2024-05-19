@@ -45,7 +45,7 @@ export const fetchUserLogin = (postData) => (dispatch) => {
       const decodedToken = jwtDecode(token);
       window.localStorage["userId"] = decodedToken.id;
       window.localStorage["token"] = token;
-      window.axios.defaults.headers.common["Authorization"] = token;
+      window.axios.defaults.headers.common["Authorization"] = `Bearer ${token}`;
       dispatch(setIsAuth(true));
       return true;
     })
@@ -71,26 +71,31 @@ export const fetchUserRegister = (postData) => (dispatch) => {
 
 export const fetchUserLogout = (query) => (dispatch) => {
   return userAPI.logout().then((res) => {
+    debugger;
     if (res.status === 200) {
       dispatch(setIsAuth(false));
       delete window.localStorage.token;
     }
+  }).catch((e) => {
+    debugger;
+    return false;
   });
 };
 
 export const fetchFindUsers = (query) => (dispatch) => {
   return userAPI.findUsers(query).then(({ data }) => {
     dispatch(setFoundUsers(data));
+  }).catch((e) => {
+    dispatch(setFoundUsers([]));
   });
 };
 
 export const updateUserAvatar = (avatar) => (dispatch) => {
   const fd = new FormData();
-  fd.append("image", avatar, avatar.name);
+  fd.append("avatar", avatar, avatar.name);
   return userAPI.updateAvatar(fd).then((res) => {
     if (res.status === 404) {
       return false;
     }
-    dispatch(fetchUserData());
   });
 };

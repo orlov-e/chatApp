@@ -32,7 +32,7 @@ const Profile = React.memo(({ id, firstName, lastName, avatar }) => {
 			) : (
 				<UserLoading />
 			)}
-			<ProfileSettings handleClickOpen={handleClickOpen} handleClose={handleClose} open={open} />
+			<ProfileSettings userID={id} handleClickOpen={handleClickOpen} handleClose={handleClose} open={open} />
 		</div>
 	);
 });

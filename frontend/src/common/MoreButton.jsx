@@ -6,7 +6,7 @@ import MoreVertIcon from "@material-ui/icons/MoreVert";
 
 const ITEM_HEIGHT = 48;
 
-export default function MoreButton({ options }) {
+export default function MoreButton({ options, onDelete }) {
   const [anchorEl, setAnchorEl] = React.useState(null);
   const open = Boolean(anchorEl);
 
@@ -41,15 +41,21 @@ export default function MoreButton({ options }) {
           },
         }}
       >
-        {options.map((option) => (
-          <MenuItem
-            key={option}
-            selected={option === "Pyxis"}
-            onClick={handleClose}
-          >
-            {option}
-          </MenuItem>
-        ))}
+    {options.map((option) => (
+      <MenuItem
+        key={option}
+        selected={option === "Pyxis"}
+        onClick={() => {
+          debugger;
+          if (option === 'Delete') {
+            onDelete();
+          }
+          handleClose();
+        }}
+      >
+        {option}
+      </MenuItem>
+    ))}
       </Menu>
     </span>
   );

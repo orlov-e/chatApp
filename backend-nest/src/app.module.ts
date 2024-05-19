@@ -4,6 +4,7 @@ import { UsersModule } from '#src/api/users/users.module';
 import { AuthModule } from '#api/auth/auth.module';
 import { DialogsModule } from './api/dialogs/dialogs.module';
 import { MessagesModule } from './api/messages/messages.module';
+import { AppGatewayModule } from './api/app/app.gateway.module';
 
 @Module({
 	imports: [
@@ -15,6 +16,7 @@ import { MessagesModule } from './api/messages/messages.module';
 		AuthModule,
 		DialogsModule,
 		MessagesModule,
+		AppGatewayModule,
 	],
 	controllers: [],
 	providers: [],

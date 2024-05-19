@@ -1,5 +1,5 @@
 import { Body, Controller, HttpCode, Post } from '@nestjs/common';
-import { ApiTags, ApiOkResponse, ApiUnauthorizedResponse, ApiOperation } from '@nestjs/swagger';
+import { ApiTags, ApiOkResponse, ApiUnauthorizedResponse, ApiOperation, ApiCreatedResponse } from '@nestjs/swagger';
 import { ExceptionResponseDto, SuccessResponseDto } from '#common/dto';
 import { AuthService } from './auth.service';
 import { LoginRequestDTO, LoginResponseDTO, RegisterRequestDTO } from './dto';
@@ -30,8 +30,8 @@ export class AuthController {
 	@Post('/register')
 	@Public()
 	@ApiOperation({ description: 'Register a new user.' })
-	@HttpCode(200)
-	@ApiOkResponse({
+	@HttpCode(201)
+	@ApiCreatedResponse({
 		description: 'User registered successfully.',
 		type: SuccessResponseDto,
 	})
@@ -40,7 +40,21 @@ export class AuthController {
 		type: ExceptionResponseDto,
 	})
 	public async register(@Body() data: RegisterRequestDTO) {
+		console.log(data);
 		await this.authService.register(data);
 		return { message: 'User registered successfully.' };
+	}
+
+	@Public()
+	@Post('/logout')
+	@ApiOperation({ description: 'Log out the current user.' })
+	@HttpCode(200)
+	@ApiOkResponse({
+		description: 'Logged out successfully.',
+		type: SuccessResponseDto,
+	})
+	public async logout() {
+		console.log('logout');
+		return { message: 'User logged out successfully.' };
 	}
 }

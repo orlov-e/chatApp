@@ -37,3 +37,9 @@ export const fetchDialogsData = () => (dispatch) => {
 export const fetchCreateDialog = (partner, text) => (dispatch) => {
   return dialogsAPI.createDialog({ partner, text });
 };
+
+export const deleteDialog = (dialogId) => (dispatch) => {
+  debugger;
+  return dialogsAPI.deleteDialog(dialogId);
+}
+

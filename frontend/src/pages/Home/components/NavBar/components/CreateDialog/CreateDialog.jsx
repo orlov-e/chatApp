@@ -11,7 +11,7 @@ import CircularProgress from '@material-ui/core/CircularProgress';
 import DialogTitle from '@material-ui/core/DialogTitle';
 import { Divider } from '@material-ui/core';
 import { fetchFindUsers } from '../../../../../../redux/actions/user';
-import { fetchCreateDialog } from '../../../../../../redux/actions/dialogs';
+import { fetchCreateDialog, fetchDialogsData } from '../../../../../../redux/actions/dialogs';
 
 function CreateDialog() {
 	const { foundUsers } = useSelector(({ user }) => user);
@@ -27,7 +27,9 @@ function CreateDialog() {
 	const timeoutRef = React.useRef(null);
 
 	const createDialog = () => {
-		dispatch(fetchCreateDialog(user, message));
+		dispatch(fetchCreateDialog(user, message)).then(() => {
+			dispatch(fetchDialogsData());
+		});
 		handleClose();
 	};
 
@@ -95,7 +97,7 @@ function CreateDialog() {
 								onClose={() => {
 									setOpen(false);
 								}}
-								getOptionLabel={(option) => option.fullName}
+								getOptionLabel={(option) => option.firstName + ' ' + option.lastName}
 								renderOption={(option, state) => {
 									return (
 										<React.Fragment>
@@ -105,7 +107,7 @@ function CreateDialog() {
 													setUser(option.id);
 												}}
 											>
-												{option.fullName} | E-mail: {option.email}
+												{option.firstName + ' ' + option.lastName} | E-mail: {option.email}
 											</span>
 										</React.Fragment>
 									);

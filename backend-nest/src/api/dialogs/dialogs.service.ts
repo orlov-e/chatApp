@@ -1,59 +1,67 @@
 import { PrismaService } from '#src/common/services';
 import { ConflictException, Injectable, NotFoundException } from '@nestjs/common';
 import { CreateDialogDTO } from './dto';
+import { AppGateway } from '../app/app.gateway';
 
 @Injectable()
 export class DialogsService {
-	constructor(private readonly db: PrismaService) {}
+	constructor(private readonly db: PrismaService, private readonly appGateway: AppGateway) {}
 
 	public async getAllDialogs(userId: number) {
 		const dialogs = await this.db.$queryRaw`
-			SELECT d.id,
-				d."createdAt",
-				d."updatedAt",
-				(SELECT json_build_object(
-								'id', u.id,
-								'firstName', u."firstName",
-								'lastName', u."lastName",
-								'email', u.email,
-								'last_seen', u."last_seen",
-								'isOnline', (u."last_seen" > (CURRENT_TIMESTAMP - INTERVAL '5 minutes'))
-						)
-					FROM "User" u
-					WHERE u.id = d."initiatorId") AS initiator,
-				(SELECT json_build_object(
-								'id', u.id,
-								'firstName', u."firstName",
-								'lastName', u."lastName",
-								'email', u.email,
-								'last_seen', u."last_seen",
-								'isOnline', (u."last_seen" > (CURRENT_TIMESTAMP - INTERVAL '5 minutes'))
-						)
-					FROM "User" u
-					WHERE u.id = d."partnerId")   AS partner,
-				(SELECT json_build_object(
-								'createdAt', m."createdAt",
-								'text', m.text
-						)
-					FROM "Message" m
-					WHERE m."dialogId" = d.id
-					ORDER BY m."createdAt" DESC
-					LIMIT 1)                      AS "lastMessage"
-			FROM "Dialog" d
-			WHERE d."initiatorId" = ${userId}
-			OR d."partnerId" = ${userId}
-			ORDER BY d."updatedAt" DESC
+		  SELECT d.id,
+			d."createdAt",
+			d."updatedAt",
+			(SELECT json_build_object(
+				'id', u.id,
+				'firstName', u."firstName",
+				'lastName', u."lastName",
+				'email', u.email,
+				'avatar', u.avatar,
+				'last_seen', u."last_seen",
+				'isOnline', (u."last_seen" > (CURRENT_TIMESTAMP - INTERVAL '5 minutes'))
+			  )
+			FROM "User" u
+			WHERE u.id = d."initiatorId") AS initiator,
+			(SELECT json_build_object(
+				'id', u.id,
+				'firstName', u."firstName",
+				'lastName', u."lastName",
+				'email', u.email,
+				'avatar', u.avatar,
+				'last_seen', u."last_seen",
+				'isOnline', (u."last_seen" > (CURRENT_TIMESTAMP - INTERVAL '5 minutes'))
+			  )
+			FROM "User" u
+			WHERE u.id = d."partnerId")   AS partner,
+			(SELECT json_build_object(
+				'createdAt', m."createdAt",
+				'text', m.text
+			  )
+			FROM "Message" m
+			WHERE m."dialogId" = d.id
+			ORDER BY m."createdAt" DESC
+			LIMIT 1)                      AS "lastMessage"
+		  FROM "Dialog" d
+		  WHERE d."initiatorId" = ${userId}
+		  OR d."partnerId" = ${userId}
+		  ORDER BY (
+			SELECT m."createdAt"
+			FROM "Message" m
+			WHERE m."dialogId" = d.id
+			ORDER BY m."createdAt" DESC
+			LIMIT 1
+		  ) DESC
 		`;
-
 		return dialogs;
 	}
 
 	public async createDialog(userId: number, data: CreateDialogDTO) {
-		const { partnerId, text } = data;
+		const { partner, text } = data;
 
 		const existingDialog = await this.db.dialog.findFirst({
 			where: {
-				AND: [{ initiatorId: userId }, { partnerId: partnerId }],
+				AND: [{ initiatorId: userId }, { partnerId: partner }],
 			},
 		});
 		if (existingDialog) throw new ConflictException('Dialog already exists');
@@ -62,7 +70,7 @@ export class DialogsService {
 			const dialog = await prisma.dialog.create({
 				data: {
 					initiatorId: userId,
-					partnerId: partnerId,
+					partnerId: partner,
 				},
 			});
 
@@ -76,6 +84,7 @@ export class DialogsService {
 
 			return { dialog, message };
 		});
+		this.appGateway.server.emit('SERVER:DIALOG_CREATED', dialogAndMessage.message);
 
 		return dialogAndMessage.dialog;
 	}
@@ -88,7 +97,7 @@ export class DialogsService {
 			},
 		});
 		if (!dialog) throw new NotFoundException('Dialog not found');
-
+		await this.db.message.deleteMany({ where: { dialogId: dialogId } });
 		return await this.db.dialog.delete({ where: { id: dialogId } });
 	}
 }

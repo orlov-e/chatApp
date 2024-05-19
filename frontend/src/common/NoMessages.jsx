@@ -17,7 +17,7 @@ const NoMessages = () => {
         color="primary"
         className={classes.SpeakerNotesOffIcon}
       />
-      <Typography className={classes.text}>There are no messages here.</Typography>
+      <Typography className={classes.text}></Typography>
     </Grid>
   );
 };

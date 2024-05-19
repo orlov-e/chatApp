@@ -11,12 +11,12 @@ export const userAPI = {
     return axios.post("auth/login", data);
   },
   logout() {
-    return axios.get("auth/logout");
+    return axios.post("auth/logout");
   },
   findUsers(query) {
-    return axios.get(`findUsers?query=${query}`);
+    return axios.post(`users/find?query=${query}`);
   },
   updateAvatar(formDataFile) {
-    return axios.post(`upload_avatar`, formDataFile);
+    return axios.post(`users/upload-avatar`, formDataFile);
   },
 };
